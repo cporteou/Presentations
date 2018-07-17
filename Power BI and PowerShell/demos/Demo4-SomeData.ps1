@@ -24,14 +24,13 @@ $workspace = Invoke-RestMethod -Uri $uri -Headers $authHeader -Method GET
 #-------------------------------------------------------
 
 #What about a specific workspace
-$workspace.value[3]
+$demoWorkspace = $workspace.value | Where-Object {$_.name -eq $workspaceName}
 
 
 #-------------------------------------------------------
 #Workspace users
-$WorkspaceID = $workspace.value[3].id
 
-$uri = "https://api.powerbi.com/v1.0/myorg/groups/$($WorkspaceID)/users"
+$uri = "https://api.powerbi.com/v1.0/myorg/groups/$($demoWorkspace.id)/users"
 
 $workspaceUsers = Invoke-RestMethod -Uri $uri -Headers $authHeader -Method GET
 
@@ -40,7 +39,7 @@ $workspaceUsers.value
 #-------------------------------------------------------
 #Workspace datasets and refresh history
 
-$uri = "https://api.powerbi.com/v1.0/myorg/groups/$($WorkspaceID)/datasets"
+$uri = "https://api.powerbi.com/v1.0/myorg/groups/$($demoWorkspace.id)/datasets"
 
 $datasets = Invoke-RestMethod -Uri $uri -Headers $authHeader -Method GET
 
@@ -51,7 +50,7 @@ $datasets.value
 #-------------------------------------------------------
 #Reports
 
-$uri = "https://api.powerbi.com/v1.0/myorg/groups/$($WorkspaceID)/reports"
+$uri = "https://api.powerbi.com/v1.0/myorg/groups/$($demoWorkspace.id)/reports"
 
 $reports = Invoke-RestMethod -Uri $uri -Headers $authHeader -Method GET
 
@@ -61,8 +60,9 @@ $reports.value
 #Let's export a report. Use this to backup content?
 $reportID = $reports.value[1].id
 
-$uri = "https://api.powerbi.com/v1.0/myorg/groups/$($WorkspaceID)/reports/$($reportID)/Export"
+$uri = "https://api.powerbi.com/v1.0/myorg/groups/$($demoWorkspace.id)/reports/$($reportID)/Export"
 
 $outputFile = (Resolve-Path .\).Path + "\$($reports.value[1].name).pbix"
+
 Invoke-RestMethod -Uri $uri -Headers $authHeader -Method GET | Out-File -filepath $outputFile
 

@@ -34,13 +34,14 @@ break
     }
 
 
-#* Create Push dataset in My Workspace
+#* Create Push dataset in Workspace
 #-------------------------------------------------------------------------------
 
     #Import JSON template for Dataset (and table)
     $templateDataset = Get-Content .\PUSHDataset.json
 
-    $uri = "https://api.powerbi.com/v1.0/myorg/datasets"
+    $workspace = Get-PBMWorkspace -authToken $token -workspaceName $workspaceName
+    $uri = "https://api.powerbi.com/v1.0/myorg/groups/$($Workspace.id)/datasets"
 
     $dataset = Invoke-RestMethod -Uri $uri -Headers $authHeader -Method POST -Body $templateDataset
 

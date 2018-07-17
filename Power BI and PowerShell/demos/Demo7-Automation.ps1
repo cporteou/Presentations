@@ -1,26 +1,25 @@
-#-------------------------------------------------------
-# Author: Craig Porteous
-# Presentation: Power BI and PowerShell: A match made in Heaven
-# Demo 7: Automated collection of data
-#-------------------------------------------------------
-
-
 
 <#
 .SYNOPSIS
-
+An automation script demo to pull/replace data in a Power BI dataset using PowerShell
 .DESCRIPTION
-#-------------------------------------------------------
-# Author: Craig Porteous
-# Presentation: Power BI and PowerShell: A match made in Heaven
-# Demo 7: Automated collection of data
-#-------------------------------------------------------
+Author: Craig Porteous
+Presentation: Power BI and PowerShell: A match made in Heaven
+Demo 7: Automated collection of Power BI license data using the AzureAD PowerShell module and the Power BI API
+ to push data into a Power BI dataset
 
 .PARAMETER email
+Email address of the user authenticating to Power BI through the API.
 
 .PARAMETER clientId
+Client ID provided by Server-side web app created in the Power BI Development Center
 
-..PARAMETER client_Secret
+.PARAMETER client_Secret
+Client secret provided by Server-side web app created in the Power BI Development Center.
+#! This MUST be noted at the time of app creation.
+
+.EXAMPLE
+Demo7-Automation -email '' -clientId '' -client_Secret ''
 #>
 
 #Requires -Modules PowerBI-Metadata, Microsoft.ADAL.PowerShell, CredentialManager, AzureAD
@@ -40,14 +39,13 @@ param
 )
 
 Begin{
-    #Authentication
     try {
-        #Authenticate to Azure AD using previously created CredentialManager entry
+        Write-Verbose 'Authenticate to Azure AD using previously created CredentialManager entry'
         $cred = Get-StoredCredential -Target 'Power BI Licenses'
 
         Connect-AzureAD -Credential $cred | Out-Null
 
-        #Authenticate to Power BI API using app details
+        Write-Verbose 'Authenticate to Power BI API using app details'
         $token = Get-PBIAuthTokenUnattended -userName $email -clientId $client_ID -client_secret $client_Secret
 
         $authHeader = @{
@@ -80,7 +78,7 @@ Process{
 
     try {
         Write-Verbose "Get the dataset ID of our Push Dataset"
-        $dataset = Get-PBMDataset -authToken $token -datasetName 'SSSC Registrations'
+        $dataset = Get-PBMDataset -authToken $token -datasetName $workspaceName
     }
     catch {
         throw (New-Object System.Exception("Error retrieving dataset! $($_.Exception.Message)", $_.Exception))
