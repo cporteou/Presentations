@@ -7,7 +7,7 @@ Describe "Testing pre-requisites for presentations" {
         It 'Pester module is installed' {
             [bool](Get-Module -Name Pester -ListAvailable) | Should -Be $true
         }
-        
+
         It 'Pester version is >= 4.3.1' {
             (Get-Module -Name Pester -ListAvailable | Select-Object -First 1).Version -ge [Version]"4.3.1" | Should -Be $true
         }
