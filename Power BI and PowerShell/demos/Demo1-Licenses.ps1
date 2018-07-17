@@ -1,7 +1,8 @@
 break
 
 #Connect to Azure
-Connect-AzureAD -Credential $cred
+Connect-AzureAD
+
 
 #-------------------------------------------------------------------------------
 
@@ -14,12 +15,12 @@ $PBILicenses | Select-Object SkuPartNumber, ConsumedUnits, @{n='ActiveUnits';e={
 #-------------------------------------------------------------------------------
 
 #Loop through each license and list all users
-foreach($license in $PBILicenses | Where-Object{$_.SkuPartNumber -eq 'POWER_BI_PRO'})
+foreach($license in $PBILicenses)
 {
-    $PBIUsers = Get-AzureADUser -All 1 | Where-Object{($_.AssignedLicenses | Where-Object{$_.SkuId -eq $license.SkuId})} | Select-Object DisplayName, UserPrincipalName, @{l='License';e={$license.SkuPartNumber}} 
+    $PBIUsers += Get-AzureADUser -All 1 | Where-Object{($_.AssignedLicenses | Where-Object{$_.SkuId -eq $license.SkuId})} | Select-Object DisplayName, UserPrincipalName, @{l='License';e={$license.SkuPartNumber}} 
 }
 
-$PBIUsers
+$PBIUsers | Out-File -FilePath "C:\Users\craig.porteous\Dropbox\Incremental\PowerBIPro-Licenses.txt"
 
 #-------------------------------------------------------------------------------
 

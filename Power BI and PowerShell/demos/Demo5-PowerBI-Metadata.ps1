@@ -1,11 +1,26 @@
+#-------------------------------------------------------
+# Author: Craig Porteous
+# Presentation: Power BI and PowerShell: A match made in Heaven
+# Demo 5: Power BI Metadata Module
+#-------------------------------------------------------
+break
 
 
-Install-Module PowerBI-Metadata
+#Install-Module PowerBI-Metadata
+#-------------------------------------------------------
 
-#TODO Authenticate to Power BI - stuff to talk about
-$auth = Get-PBIAuthTokenPrompt -clientId "0bb5a25b-9f95-4091-8c48-de56248c9d24" -redirectUrl "https://incrementalgroup.co.uk"
+    Get-Command -Module PowerBI-Metadata
 
+#-------------------------------------------------------
+# Authenticate to Power BI
+
+    $token = Get-PBIAuthTokenPrompt -clientId $clientid -redirectUrl $redirectUrl
+
+#-------------------------------------------------------
 #Return datasets for a specific Workspace (we only know the name)
-Get-PBMDataset -authToken $auth -workspaceName 'SSSC Data Migration' | Get-PBMDatasetRefreshHistory -authToken $auth -workspaceID $_.workspaceID -DatasetID $_.datasetId
 
-Get-PBMDatasetRefreshHistory -authToken $auth -workspaceID 1530055f-XXXX-XXXX-XXXX-ee8c87e4a648  -DatasetID ffac73aa-XXXX-XXXX-XXXX-643f36b11a68
+$datasets = Get-PBMDataset -authToken $token -workspaceName '' #TODO Add Workspace name
+
+    #Take a look at the refresh history
+    #TODO Find a dataset that has a refresh history
+    Get-PBMDatasetRefreshHistory -authToken $token -workspaceID $datasets[0].workspaceID -DatasetID $datasets[0].id

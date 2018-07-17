@@ -6,16 +6,15 @@
 break
 
 # Install-Module Microsoft.ADAL.PowerShell
-#-------------------------------------------------------
-# Prompted Authentication
-#-------------------------------------------------------
-
+Get-Module
 # Client ID can be obtained from creating a Power BI app:
 # https://dev.powerbi.com/apps
 # App Type: Native
+#-------------------------------------------------------
 
-$clientId = '0bb5a25b-9f95-4091-8c48-de56248c9d24'
-$redirectUrl = 'https://incrementalgroup.co.uk'
+#Variables already defined
+$clientId
+$redirectUrl
 
 #-------------------------------------------------------
 
@@ -38,8 +37,10 @@ $authContext = New-Object "Microsoft.IdentityModel.Clients.ActiveDirectory.Authe
 
 #-------------------------------------------------------
 
-
+#TODO Which one works best?!
+# Get-ADALAccessToken -AuthorityName $authority -ClientId $clientId -ResourceId $resourceAppID -RedirectUri $redirectUrl
 $auth = $authContext.AcquireToken($resourceAppID, $clientId, $redirectUrl, $promptBehaviour)
 
 $token = $auth.AccessToken
-$auth.AccessToken
+
+$token

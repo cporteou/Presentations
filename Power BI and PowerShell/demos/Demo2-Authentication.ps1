@@ -7,16 +7,16 @@ break
 
 # Install-Module Microsoft.ADAL.PowerShell
 # Install-Module -Name 'CredentialManager'
-#-------------------------------------------------------
 
 # Client ID can be obtained from creating a Power BI app:
 # https://dev.powerbi.com/apps
 # App Type: Server-side Web app
+#-------------------------------------------------------
 
-$clientId = ''
-$client_secret = ''
+$client_id
+$client_secret
 
-$email = 'Craig.porteous@Incrementalgroup.co.uk'
+$email
 
 #Tenant ID function. Check Azure for Tenant ID
 $tenantID = Get-AzureTenantID -Email $email
@@ -29,7 +29,7 @@ $resourceAppID = "https://analysis.windows.net/powerbi/api"
 
 
 #-------------------------------------------------------
-#* Use Credential Manager module - Thanks Josh King (@WindosNZ)
+#* OPTION 2 - Use Credential Manager module - Thanks Josh King (@WindosNZ)
 
 	$Splat = @{
 		Target   = 'Power BI Auth Demo'
@@ -43,7 +43,7 @@ $resourceAppID = "https://analysis.windows.net/powerbi/api"
 	$Pass = $Pass.Password
 
 #-------------------------------------------------------
-#* Use an encrypted text file
+#* OPTION 2 - Use an encrypted text file
 
 	$path = (Resolve-Path .\).Path
 	$user = $env:UserName
@@ -65,7 +65,7 @@ $textPass = [System.Runtime.InteropServices.Marshal]::PtrToStringAuto($BSTR)
 Write-Verbose 'Authenticating to Azure/PBI'
 $authBody = @{
         'resource'=$resourceAppID
-        'client_id'=$clientId
+        'client_id'=$client_id
         'grant_type'="password"
         'username'=$userName
         'password'= $textPass #! THIS IS IN PLAIN TEXT!
@@ -86,4 +86,4 @@ $authBody = $null
 
 $token = $auth.access_token
 
-$auth.access_token
+$token

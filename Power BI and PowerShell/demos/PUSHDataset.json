@@ -1,0 +1,24 @@
+{
+    "name": "Power BI Licenses",
+    "defaultMode": "Push",
+    "addRowsAPIEnabled": "True",
+    "tables": [
+      {
+        "name": "Licenses",
+        "columns": [
+          {
+            "name": "DisplayName",
+            "dataType": "string"
+          },
+          {
+            "name": "UserPrincipalName",
+            "dataType": "string"
+          },
+          {
+            "name": "License",
+            "dataType": "string"
+          }
+        ]
+      }
+    ]
+  }
