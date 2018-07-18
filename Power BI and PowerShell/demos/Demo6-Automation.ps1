@@ -14,6 +14,7 @@ break
     #Collect license info
     $pbiLicenses = Get-AzureADSubscribedSku | Where-Object{$_.SkuPartNumber -like '*POWER_BI*' -and $_.CapabilityStatus -eq 'Enabled'} | Select-Object SkuPartNumber, ConsumedUnits, SkuId
 
+    $pbiUsers = @()
     #Loop through each license and list all users
     foreach($license in $pbiLicenses)
     {
@@ -45,19 +46,21 @@ break
 
     $dataset = Invoke-RestMethod -Uri $uri -Headers $authHeader -Method POST -Body $templateDataset
 
-    https://app.powerbi.com/groups/me
+    https://app.powerbi.com/groups/
 
 
 #* Push data to dataset
 #-------------------------------------------------------------------------------
 
     #We can get a list of tables
-    $uri = "https://api.powerbi.com/v1.0/myorg/datasets/$($dataset.id)/tables"
+    $uri = "https://api.powerbi.com/v1.0/myorg/groups/$($Workspace.id)/datasets/$($dataset.id)/tables"
 
-    Invoke-RestMethod -Uri $uri -Headers $authHeader -Method GET
+    $tables = Invoke-RestMethod -Uri $uri -Headers $authHeader -Method GET
+
+    $tables.value
 
     #Push JSON data to the dataset
-    $uri = "https://api.powerbi.com/v1.0/myorg/datasets/$($dataset.id)/tables/Licenses/rows"
+    $uri = "https://api.powerbi.com/v1.0/myorg/groups/$($Workspace.id)/datasets/$($dataset.id)/tables/Licenses/rows"
 
     Invoke-RestMethod -Uri $uri -Headers $authHeader -Method POST -Body $pbiUsersJson
 

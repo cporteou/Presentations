@@ -1,7 +1,6 @@
 {
     "name": "Power BI Licenses",
     "defaultMode": "Push",
-    "addRowsAPIEnabled": "True",
     "tables": [
       {
         "name": "Licenses",

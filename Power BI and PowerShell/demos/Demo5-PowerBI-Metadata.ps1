@@ -21,6 +21,8 @@ break
 
     $datasets = Get-PBMDataset -authToken $token -workspaceName $workspaceName
 
+    $datasets = Get-PBMDataset -authToken $token -datasetName 'GitHub'
+
     #Take a look at the refresh history
     #TODO Find a dataset that has a refresh history
     Get-PBMDatasetRefreshHistory -authToken $token -workspaceID $datasets[0].workspaceID -DatasetID $datasets[0].id

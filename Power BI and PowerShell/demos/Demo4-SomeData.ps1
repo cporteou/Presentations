@@ -21,11 +21,14 @@ $uri = "https://api.powerbi.com/v1.0/myorg/groups"
 
 $workspace = Invoke-RestMethod -Uri $uri -Headers $authHeader -Method GET
 
+$workspace.value
+
 #-------------------------------------------------------
 
 #What about a specific workspace
-$demoWorkspace = $workspace.value | Where-Object {$_.name -eq $workspaceName}
+$demoWorkspace = $workspace.value | Where-Object {$_.name -eq 'PowerShell Demo'}
 
+$demoWorkspace
 
 #-------------------------------------------------------
 #Workspace users
@@ -58,11 +61,11 @@ $reports.value
 
 #-------------------------------------------------------
 #Let's export a report. Use this to backup content?
-$reportID = $reports.value[1].id
+$report = $reports.value | Where-Object{$_.name -eq 'Weather'}
 
-$uri = "https://api.powerbi.com/v1.0/myorg/groups/$($demoWorkspace.id)/reports/$($reportID)/Export"
+$uri = "https://api.powerbi.com/v1.0/myorg/groups/$($demoWorkspace.id)/reports/$($report.id)/Export"
 
-$outputFile = (Resolve-Path .\).Path + "\$($reports.value[1].name).pbix"
+$outputFile = (Resolve-Path .\).Path + "\$($report.name).pbix"
 
 Invoke-RestMethod -Uri $uri -Headers $authHeader -Method GET | Out-File -filepath $outputFile
 
