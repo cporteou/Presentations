@@ -19,7 +19,7 @@ break
 #-------------------------------------------------------
 #Return datasets for a specific Workspace (we only know the name)
 
-$datasets = Get-PBMDataset -authToken $token -workspaceName '' #TODO Add Workspace name
+    $datasets = Get-PBMDataset -authToken $token -workspaceName $workspaceName
 
     #Take a look at the refresh history
     #TODO Find a dataset that has a refresh history

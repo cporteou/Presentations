@@ -6,7 +6,7 @@
 break
 
 # Install-Module Microsoft.ADAL.PowerShell
-Get-Module
+
 # Client ID can be obtained from creating a Power BI app:
 # https://dev.powerbi.com/apps
 # App Type: Native
@@ -30,15 +30,13 @@ $authContext = New-Object "Microsoft.IdentityModel.Clients.ActiveDirectory.Authe
 #-------------------------------------------------------
 
         #Authentication will prompt for credentials'
-        $promptBehaviour = 'Always'
+        #$promptBehaviour = 'Always'
 
         #Authentication will only prompt for credentials if user is not already authenticated'
-        #$promptBehaviour = 'Auto'
+        $promptBehaviour = 'Auto'
 
 #-------------------------------------------------------
 
-#TODO Which one works best?!
-# Get-ADALAccessToken -AuthorityName $authority -ClientId $clientId -ResourceId $resourceAppID -RedirectUri $redirectUrl
 $auth = $authContext.AcquireToken($resourceAppID, $clientId, $redirectUrl, $promptBehaviour)
 
 $token = $auth.AccessToken

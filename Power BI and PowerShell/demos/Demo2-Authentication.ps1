@@ -13,8 +13,8 @@ break
 # App Type: Server-side Web app
 #-------------------------------------------------------
 
-$client_id
-$client_secret
+$client_Id
+$client_Secret
 
 $email
 
@@ -29,7 +29,7 @@ $resourceAppID = "https://analysis.windows.net/powerbi/api"
 
 
 #-------------------------------------------------------
-#* OPTION 2 - Use Credential Manager module - Thanks Josh King (@WindosNZ)
+#* OPTION 1 - Use Credential Manager module - Thanks Josh King (@WindosNZ)
 
 	$Splat = @{
 		Target   = 'Power BI Auth Demo'
@@ -39,8 +39,8 @@ $resourceAppID = "https://analysis.windows.net/powerbi/api"
 	}
 	New-StoredCredential @Splat
 
-	$Pass = Get-StoredCredential -Target 'Power BI Auth Demo'
-	$Pass = $Pass.Password
+	$cred = Get-StoredCredential -Target 'Power BI Licenses'
+	$pass = $cred.Password
 
 #-------------------------------------------------------
 #* OPTION 2 - Use an encrypted text file
@@ -53,24 +53,24 @@ $resourceAppID = "https://analysis.windows.net/powerbi/api"
 	Read-Host -Prompt "Please enter Password for $email" -AsSecureString | ConvertFrom-SecureString | Out-File "$($path)\$($email)_cred_by_$($user).txt"
 
 	# Retrieve file
-	$Pass = Get-Content ($path + '\' + $file) | ConvertTo-SecureString
+	$pass = Get-Content ($path + '\' + $file) | ConvertTo-SecureString
 
 #-------------------------------------------------------
 
 #Pull password from secure string - This only works for the user who encrypted the password in the first place
-$BSTR = [System.Runtime.InteropServices.Marshal]::SecureStringToBSTR($Pass)
+$BSTR = [System.Runtime.InteropServices.Marshal]::SecureStringToBSTR($pass)
 $textPass = [System.Runtime.InteropServices.Marshal]::PtrToStringAuto($BSTR)
 
 
 Write-Verbose 'Authenticating to Azure/PBI'
 $authBody = @{
         'resource'=$resourceAppID
-        'client_id'=$client_id
+        'client_id'=$client_Id
         'grant_type'="password"
-        'username'=$userName
+        'username'=$email
         'password'= $textPass #! THIS IS IN PLAIN TEXT!
         'scope'="openid"
-        'client_secret'=$client_secret
+        'client_secret'=$client_Secret
 }
 
 #! Clear password variable immediately after use
