@@ -25,12 +25,9 @@ $resourceAppID = "https://analysis.windows.net/powerbi/api"
 
 #-------------------------------------------------------
 
-        # Load Active Directory Authentication Library (ADAL) Assemblies
-        $adal = "${env:ProgramFiles}\WindowsPowerShell\Modules\Microsoft.ADAL.PowerShell\1.12\Microsoft.IdentityModel.Clients.ActiveDirectory.dll"
-        $adalforms = "${env:ProgramFiles}\WindowsPowerShell\Modules\Microsoft.ADAL.PowerShell\1.12\Microsoft.IdentityModel.Clients.ActiveDirectory.WindowsForms.dll"
-
-        [System.Reflection.Assembly]::LoadFrom($adal)
-        [System.Reflection.Assembly]::LoadFrom($adalforms)
+#Load Active Directory Authentication Library (ADAL) Assemblies
+Add-Type -Path "${env:ProgramFiles}\WindowsPowerShell\Modules\Microsoft.ADAL.PowerShell\1.12\Microsoft.IdentityModel.Clients.ActiveDirectory.dll"
+Add-Type -Path "${env:ProgramFiles}\WindowsPowerShell\Modules\Microsoft.ADAL.PowerShell\1.12\Microsoft.IdentityModel.Clients.ActiveDirectory.WindowsForms.dll"
 
 $authContext = New-Object "Microsoft.IdentityModel.Clients.ActiveDirectory.AuthenticationContext" -ArgumentList $authority
 
