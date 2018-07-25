@@ -5,7 +5,7 @@
 #-------------------------------------------------------
 break
 
-Install-Module Microsoft.ADAL.PowerShell -Force
+# Install-Module Microsoft.ADAL.PowerShell
 
 # Client ID can be obtained from creating a Power BI app:
 # https://dev.powerbi.com/apps

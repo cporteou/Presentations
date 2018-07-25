@@ -5,8 +5,8 @@
 #-------------------------------------------------------
 break
 
-# Install-Module Microsoft.ADAL.PowerShell
-# Install-Module -Name 'CredentialManager'
+# Install-Module -Name Microsoft.ADAL.PowerShell
+# Install-Module -Name CredentialManager
 
 # Client ID can be obtained from creating a Power BI app:
 # https://dev.powerbi.com/apps
