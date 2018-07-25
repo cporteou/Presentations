@@ -8,8 +8,7 @@ Connect-AzureAD
 #-------------------------------------------------------------------------------
 
 #Collect license info
-$PBILicenses = Get-AzureADSubscribedSku | Where-Object{$_.SkuPartNumber -like '*POWER_BI*' -and $_.CapabilityStatus -eq 'Enabled'} `
-    | Select-Object SkuPartNumber, ConsumedUnits, SkuId
+$PBILicenses = Get-AzureADSubscribedSku | Where-Object{$_.SkuPartNumber -like '*POWER_BI*' -and $_.CapabilityStatus -eq 'Enabled'} | Select-Object SkuPartNumber, ConsumedUnits, SkuId
 
 #Return global license count
 $PBILicenses | Select-Object SkuPartNumber, ConsumedUnits

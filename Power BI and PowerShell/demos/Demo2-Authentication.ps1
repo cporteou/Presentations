@@ -42,6 +42,9 @@ $resourceAppID = "https://analysis.windows.net/powerbi/api"
 	$cred = Get-StoredCredential -Target 'Power BI Licenses'
 	$pass = $cred.Password
 
+	# This should be a secure string
+	$pass
+
 #-------------------------------------------------------
 #* OPTION 2 - Use an encrypted text file
 
@@ -55,14 +58,15 @@ $resourceAppID = "https://analysis.windows.net/powerbi/api"
 	# Retrieve file
 	$pass = Get-Content ($path + '\' + $file) | ConvertTo-SecureString
 
+	# This should be a secure string
+	$pass
+
 #-------------------------------------------------------
 
 #Pull password from secure string - This only works for the user who encrypted the password in the first place
 $BSTR = [System.Runtime.InteropServices.Marshal]::SecureStringToBSTR($pass)
 $textPass = [System.Runtime.InteropServices.Marshal]::PtrToStringAuto($BSTR)
 
-
-Write-Verbose 'Authenticating to Azure/PBI'
 $authBody = @{
         'resource'=$resourceAppID
         'client_id'=$client_Id
