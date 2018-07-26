@@ -39,7 +39,7 @@ break
 #-------------------------------------------------------------------------------
 
     #Import JSON template for Dataset (and table)
-    $templateDataset = Get-Content .\PUSHDataset.json
+    $templateDataset = Get-Content .\demos\PUSHDataset.json
 
     $workspace = Get-PBMWorkspace -authToken $token -workspaceName $workspaceName
     $uri = "https://api.powerbi.com/v1.0/myorg/groups/$($Workspace.id)/datasets"
