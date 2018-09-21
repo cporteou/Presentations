@@ -4,7 +4,7 @@
 
 ### Where has this been presented?
 
-* 25 July 2018 - [Cardiff MSFT Stack User Group] (https://www.meetup.com/MSFT-Stack/events/252272109/)
+* 25 July 2018 - [Cardiff MSFT Stack User Group](https://www.meetup.com/MSFT-Stack/events/252272109/)
 
 ## The PowerShell Standards Agency
 
@@ -18,11 +18,11 @@
 
 ### Resources
 
-* Full resources can be found on my co-presenter's GitHub: [The PowerShell Standards Agency] (https://github.com/pauby/presentations/tree/master/The%20PowerShell%20Standards%20Agency)
+* Full resources can be found on my co-presenter's GitHub: [The PowerShell Standards Agency](https://github.com/pauby/presentations/tree/master/The%20PowerShell%20Standards%20Agency)
 
 
 ## Managing Power BI Dataset Refreshes with PowerShell
 
 ### Where has this been presented?
 
-* 28 Nov 2017 - [Scottish PowerShell & DevOps User Group] (https://psdevopsug.scot/meetups/2017-11-november/)
+* 28 Nov 2017 - [Scottish PowerShell & DevOps User Group](https://psdevopsug.scot/meetups/2017-11-november/)
