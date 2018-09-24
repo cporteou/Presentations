@@ -1,14 +1,15 @@
 #-------------------------------------------------------
 # Author: Craig Porteous
 # Presentation: Power BI and PowerShell: A match made in Heaven
-# Demo 6: Automation setup
+# Demo 4: Automation setup
 #-------------------------------------------------------
 break
 
 # Automate collection of licensing data. 2 methods to do this if you want this to run unattended or with prompted authentication
 
-#* Get License data across all users
 #-------------------------------------------------------------------------------
+# Get License data across all users
+
     Connect-AzureAD
 
     #Collect license info
@@ -23,10 +24,13 @@ break
 
     $pbiUsersJson = $pbiUsers | ConvertTo-Json
 
-
-#* Connect to Power BI API
 #-------------------------------------------------------------------------------
-    $token = Get-PBIAuthTokenUnattended -userName $email -clientId $client_ID -client_secret $client_Secret
+# Connect to Power BI API using this Unattended auth function in the PowerBI-Metadata module
+
+    #Ive set my email already and my CLientID and CLient Secret using an App created earlier
+    #Here I'm using the secure password file method.
+
+    $token = Get-PBIAuthTokenUnattended -userName $email -clientId $client_ID -client_secret $client_Secret -Verbose
 
     # Build the API Header with the auth token
     $authHeader = @{
@@ -34,45 +38,21 @@ break
         'Authorization'='Bearer ' + $token
     }
 
-        #?--------------------------------------------------------------------------
-        #? Using the Power BI Management Module
-        Login-PowerBI
-
-        #?--------------------------------------------------------------------------
-
-#* Create Push dataset in Workspace
 #-------------------------------------------------------------------------------
+# Create Push dataset in Workspace from template
 
     #Import JSON template for Dataset (and table)
-    $templateDataset = Get-Content .\demos\PUSHDataset.json
+    $templateDataset = Get-Content .\PUSHDataset.json
 
-    $workspace = Get-PBMWorkspace -authToken $token -workspaceName $workspaceName
     $uri = "https://api.powerbi.com/v1.0/myorg/groups/$($Workspace.id)/datasets"
 
     $dataset = Invoke-RestMethod -Uri $uri -Headers $authHeader -Method POST -Body $templateDataset
 
 
-        #?--------------------------------------------------------------------------
-        #?OR Build it with the Management module functions
-        $col1 = New-PowerBIColumn -Name 'DisplayName' -DataType String
-        $col2 = New-PowerBIColumn -Name 'UserPrincipalName' -DataType String
-        $col3 = New-PowerBIColumn -Name 'License' -DataType String
+    Start-Process https://app.powerbi.com/groups/09205e39-5f7a-4daa-9b9c-4aaf6cb34cf9/list/datasets
 
-        $table1 = New-PowerBITable -Name 'Licenses' -Columns $col1, $col2, $col3
-
-        #TODO Test this can be piped
-        $ds = New-PowerBIDataset -Name 'Power BI Licenses' -Tables $table1
-
-        $dataset = Add-PowerBIDataset -DataSet $ds -WorkspaceId $workspace.id
-
-
-        #?--------------------------------------------------------------------------
-
-    https://app.powerbi.com/groups/
-
-
-#* Push data to dataset
 #-------------------------------------------------------------------------------
+# Push data to dataset
 
     #We can get a list of tables
     $uri = "https://api.powerbi.com/v1.0/myorg/groups/$($Workspace.id)/datasets/$($dataset.id)/tables"
@@ -86,17 +66,9 @@ break
 
     Invoke-RestMethod -Uri $uri -Headers $authHeader -Method POST -Body $pbiUsersJson
 
-    #?--------------------------------------------------------------------------
-    #? Using the Power BI Management Module
 
-    # Needs the data to be in an array, not JSON
-    $pbiUsersArray = ConvertFrom-Json $pbiUsersJson
-
-    Add-PowerBIRow -DatasetId $dataset.Id -TableName 'Licenses' -Rows $pbiUsersArray -WorkspaceId $workspace.id
-    #?--------------------------------------------------------------------------
-
-#* Dataset feeds into report
 #-------------------------------------------------------------------------------
+# Dataset feeds into report
 
-    https://app.powerbi.com/groups/me
+Start-Process https://app.powerbi.com/groups/09205e39-5f7a-4daa-9b9c-4aaf6cb34cf9/list/datasets
 

@@ -11,7 +11,12 @@ break
 # Demo 3: Creating an App for Authentication
 #-------------------------------------------------------
 
-# Create an App from the Power BI Developer Portal
+# Create a Server-Side App from the Power BI Developer Portal
 
     http://dev.powerbi.com/apps
+
+
+# Grant Permissions from within Azure (as we can't do this from a Prompt)
+    https://portal.azure.com
+
 

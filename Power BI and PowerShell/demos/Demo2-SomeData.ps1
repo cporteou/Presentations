@@ -5,9 +5,12 @@
 #-------------------------------------------------------
 break
 
+Start-Process https://docs.microsoft.com/en-us/rest/api/power-bi/
+
 # This is a wrapper module
     Install-Module MicrosoftPowerBIMgmt -Scope CurrentUser
-    Update-Module MicrosoftPowerBIMgmt 
+    #Currently a bug with the NewtonSoft module
+    Update-Module MicrosoftPowerBIMgmt
 #-------------------------------------------------------
 # List out the available commands
 
@@ -47,6 +50,9 @@ break
     Add-PowerBIWorkspaceUser -id $workspace.id -UserPrincipalName 'Aburton@sqlglasgow.co.uk' -AccessRight Admin
 
     Remove-PowerBIWorkspaceUser -id $workspace.id -UserPrincipalName 'Aburton@sqlglasgow.co.uk'
+
+
+
     #Doesnt work for adding members!
     Add-PowerBIWorkspaceUser -id $workspace.id -UserPrincipalName 'Aburton@sqlglasgow.co.uk' -AccessRight Member
 
@@ -64,16 +70,13 @@ break
     }
 
 #-------------------------------------------------------
-#Workspace datasets and refresh history
+#Workspace and datasets we defined above and their refresh history
 
     $uri = "https://api.powerbi.com/v1.0/myorg/groups/$($workspace.id)/datasets/$($dataset.id)/refreshes"
 
     $datasets = Invoke-RestMethod -Uri $uri -Headers $authHeader -Method GET
 
     $datasets.value
-
-    #Can only Add rows to datasets created by the API
-    #Cant refresh directQuery datasets ie (usage metrics)
 
 #-------------------------------------------------------
 #Reports
@@ -83,6 +86,8 @@ break
     $reports = Invoke-RestMethod -Uri $uri -Headers $authHeader -Method GET
 
     $reports.value
+
+    Start-Process $reports.value.webUrl
 
 #-------------------------------------------------------
 #Let's export a report. Use this to backup content?

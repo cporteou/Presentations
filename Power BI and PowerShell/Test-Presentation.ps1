@@ -12,6 +12,10 @@ Describe "Testing pre-requisites for presentations" {
             (Get-Module -Name Pester -ListAvailable | Select-Object -First 1).Version -ge [Version]"4.3.1" | Should -Be $true
         }
 
+        It 'Power BI Mgmt Module is installed' {
+            [bool](Get-Module -Name MicrosoftPowerBIMgmt -ListAvailable) | Should -Be $true
+        }
+
         It 'Power BI Metadata is installed' {
             [bool](Get-Module -Name PowerBI-Metadata -ListAvailable) | Should -Be $true
         }
@@ -38,9 +42,9 @@ Describe "Testing pre-requisites for presentations" {
             $clientId | Should Not BeNullorEmpty
             $redirectUrl | Should Not BeNullorEmpty
         }
-        It "Demo Credential is clear (Power BI Auth Demo)" {
-            (Get-StoredCredential -Target 'Power BI Auth Demo') | Should BeNullorEmpty
-        }
+        # It "Demo Credential is clear (Power BI Auth Demo)" {
+        #     (Get-StoredCredential -Target 'Power BI Auth Demo') | Should BeNullorEmpty
+        # }
         It "Automation Credential exists (Power BI Licenses)" {
             (Get-StoredCredential -Target 'Power BI Licenses' | Select-Object $_.UserName ) | Should Not BeNullOrEmpty
         }
@@ -62,7 +66,7 @@ Describe "Testing pre-requisites for presentations" {
             (Get-Process POWERPNT -ErrorAction SilentlyContinue).MainWindowTitle| Should Be 'Power BI and PowerShell.pptx - PowerPoint'
         }
     }
-    Context 'Messenger apps' {
+    Context 'Environment Clean' {
         It "Telegram should be closed" {
             (Get-Process Telegram -ErrorAction SilentlyContinue).Count | Should Be 0
         }
@@ -72,5 +76,9 @@ Describe "Testing pre-requisites for presentations" {
         It "Slack should be closed" {
             (Get-Process Slack* -ErrorAction SilentlyContinue).Count | Should Be 0
         }
+        It "Default browser set" {
+        (Get-ItemProperty HKCU:\Software\Microsoft\windows\Shell\Associations\UrlAssociations\http\UserChoice).Progid | Should BeLike 'FirefoxURL*'
+        }
     }
+
 }
