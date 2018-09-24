@@ -5,7 +5,7 @@
 #-------------------------------------------------------
 break
 
-# Automate collection of licensing data
+# Automate collection of licensing data. 2 methods to do this if you want this to run unattended or with prompted authentication
 
 #* Get License data across all users
 #-------------------------------------------------------------------------------
@@ -34,6 +34,11 @@ break
         'Authorization'='Bearer ' + $token
     }
 
+        #?--------------------------------------------------------------------------
+        #? Using the Power BI Management Module
+        Login-PowerBI
+
+        #?--------------------------------------------------------------------------
 
 #* Create Push dataset in Workspace
 #-------------------------------------------------------------------------------
@@ -45,6 +50,23 @@ break
     $uri = "https://api.powerbi.com/v1.0/myorg/groups/$($Workspace.id)/datasets"
 
     $dataset = Invoke-RestMethod -Uri $uri -Headers $authHeader -Method POST -Body $templateDataset
+
+
+        #?--------------------------------------------------------------------------
+        #?OR Build it with the Management module functions
+        $col1 = New-PowerBIColumn -Name 'DisplayName' -DataType String
+        $col2 = New-PowerBIColumn -Name 'UserPrincipalName' -DataType String
+        $col3 = New-PowerBIColumn -Name 'License' -DataType String
+
+        $table1 = New-PowerBITable -Name 'Licenses' -Columns $col1, $col2, $col3
+
+        #TODO Test this can be piped
+        $ds = New-PowerBIDataset -Name 'Power BI Licenses' -Tables $table1
+
+        $dataset = Add-PowerBIDataset -DataSet $ds -WorkspaceId $workspace.id
+
+
+        #?--------------------------------------------------------------------------
 
     https://app.powerbi.com/groups/
 
@@ -64,6 +86,14 @@ break
 
     Invoke-RestMethod -Uri $uri -Headers $authHeader -Method POST -Body $pbiUsersJson
 
+    #?--------------------------------------------------------------------------
+    #? Using the Power BI Management Module
+
+    # Needs the data to be in an array, not JSON
+    $pbiUsersArray = ConvertFrom-Json $pbiUsersJson
+
+    Add-PowerBIRow -DatasetId $dataset.Id -TableName 'Licenses' -Rows $pbiUsersArray -WorkspaceId $workspace.id
+    #?--------------------------------------------------------------------------
 
 #* Dataset feeds into report
 #-------------------------------------------------------------------------------

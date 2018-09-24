@@ -5,67 +5,92 @@
 #-------------------------------------------------------
 break
 
-#Use the Token we created earlier
-$token
+# This is a wrapper module
+    Install-Module MicrosoftPowerBIMgmt -Scope CurrentUser
+    Update-Module MicrosoftPowerBIMgmt 
+#-------------------------------------------------------
+# List out the available commands
 
-# Build the API Header with the auth token
-$authHeader = @{
-    'Content-Type'='application/json'
-    'Authorization'='Bearer ' + $token
-}
+    Get-Command -Module MicrosoftPowerBIMgmt.Data
+    Get-Command -Module MicrosoftPowerBIMgmt.Profile
+    Get-Command -Module MicrosoftPowerBIMgmt.Reports
+    Get-Command -Module MicrosoftPowerBIMgmt.Workspaces
 
 #-------------------------------------------------------
+# Authenticate to Power BI
 
-#Let's return all Workspaces
-$uri = "https://api.powerbi.com/v1.0/myorg/groups"
-
-$workspace = Invoke-RestMethod -Uri $uri -Headers $authHeader -Method GET
-
-$workspace.value
+    Login-PowerBI
 
 #-------------------------------------------------------
+# List out all of your workspaces
 
-#What about a specific workspace
-$demoWorkspace = $workspace.value | Where-Object {$_.name -eq 'PowerShell Demo'}
+    Get-PowerBIGroup -Scope Individual
 
-$demoWorkspace
+    # List out ALL workspaces in the Org - For Power BI Admins
+    Get-PowerBIWorkspace -Scope Organization
+
+    $workspace = Get-PowerBIWorkspace -Name 'PowerShell Demo'
 
 #-------------------------------------------------------
-#Workspace users
+# Get all datasets in a specific workspace
 
-$uri = "https://api.powerbi.com/v1.0/myorg/groups/$($demoWorkspace.id)/users"
+    Get-PowerBIWorkspace -Name 'PowerShell Demo' | Get-PowerBIDataset
 
-$workspaceUsers = Invoke-RestMethod -Uri $uri -Headers $authHeader -Method GET
+    $dataset = Get-PowerBIDataset -WorkspaceId $workspace.Id | Where-Object {$_.Name -eq 'Weather'}
 
-$workspaceUsers.value
+#-------------------------------------------------------
+# How about the users?
+
+    Get-PowerBIWorkspaceUser
+
+    #Not yet. Only Add/Remove
+    Add-PowerBIWorkspaceUser -id $workspace.id -UserPrincipalName 'Aburton@sqlglasgow.co.uk' -AccessRight Admin
+
+    Remove-PowerBIWorkspaceUser -id $workspace.id -UserPrincipalName 'Aburton@sqlglasgow.co.uk'
+    #Doesnt work for adding members!
+    Add-PowerBIWorkspaceUser -id $workspace.id -UserPrincipalName 'Aburton@sqlglasgow.co.uk' -AccessRight Member
+
+#-------------------------------------------------------
+# We can see Dataset refresh history by invoking the REST API manually
+# Not currently a function in the module.
+
+    Login-PowerBIServiceAccount
+
+    $token = Get-PowerBIAccessToken
+
+    $authHeader = @{
+        'Content-Type'='application/json'
+        'Authorization'= $token.Authorization
+    }
 
 #-------------------------------------------------------
 #Workspace datasets and refresh history
 
-$uri = "https://api.powerbi.com/v1.0/myorg/groups/$($demoWorkspace.id)/datasets"
+    $uri = "https://api.powerbi.com/v1.0/myorg/groups/$($workspace.id)/datasets/$($dataset.id)/refreshes"
 
-$datasets = Invoke-RestMethod -Uri $uri -Headers $authHeader -Method GET
+    $datasets = Invoke-RestMethod -Uri $uri -Headers $authHeader -Method GET
 
-$datasets.value
-#Can only Add rows to datasets created by the API
-#Cant refresh directQuery datasets ie (usage metrics)
+    $datasets.value
+
+    #Can only Add rows to datasets created by the API
+    #Cant refresh directQuery datasets ie (usage metrics)
 
 #-------------------------------------------------------
 #Reports
 
-$uri = "https://api.powerbi.com/v1.0/myorg/groups/$($demoWorkspace.id)/reports"
+    $uri = "https://api.powerbi.com/v1.0/myorg/groups/$($workspace.id)/reports"
 
-$reports = Invoke-RestMethod -Uri $uri -Headers $authHeader -Method GET
+    $reports = Invoke-RestMethod -Uri $uri -Headers $authHeader -Method GET
 
-$reports.value
+    $reports.value
 
 #-------------------------------------------------------
 #Let's export a report. Use this to backup content?
-$report = $reports.value | Where-Object{$_.name -eq 'Weather'}
+    $report = $reports.value | Where-Object{$_.name -eq 'Weather'}
 
-$uri = "https://api.powerbi.com/v1.0/myorg/groups/$($demoWorkspace.id)/reports/$($report.id)/Export"
+    $uri = "https://api.powerbi.com/v1.0/myorg/groups/$($Workspace.id)/reports/$($report.id)/Export"
 
-$outputFile = (Resolve-Path .\).Path + "\$($report.name).pbix"
+    $outputFile = (Resolve-Path .\).Path + "\$($report.name).pbix"
 
-Invoke-RestMethod -Uri $uri -Headers $authHeader -Method GET | Out-File -filepath $outputFile
+    Invoke-RestMethod -Uri $uri -Headers $authHeader -Method GET | Out-File -filepath $outputFile
 
