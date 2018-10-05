@@ -38,10 +38,10 @@ Describe "Testing pre-requisites for presentations" {
             $client_Secret | Should Not BeNullorEmpty
             $email | Should Not BeNullorEmpty
         }
-        It "Prompted Auth variables set" {
-            $clientId | Should Not BeNullorEmpty
-            $redirectUrl | Should Not BeNullorEmpty
-        }
+        # It "Prompted Auth variables set" {
+        #     $clientId | Should Not BeNullorEmpty
+        #     $redirectUrl | Should Not BeNullorEmpty
+        # }
         # It "Demo Credential is clear (Power BI Auth Demo)" {
         #     (Get-StoredCredential -Target 'Power BI Auth Demo') | Should BeNullorEmpty
         # }
