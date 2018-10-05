@@ -16,7 +16,7 @@ Connect-AzureAD
 $PBILicenses = Get-AzureADSubscribedSku | Where-Object{$_.SkuPartNumber -like '*POWER_BI*' -and $_.CapabilityStatus -eq 'Enabled'} | Select-Object SkuPartNumber, ConsumedUnits, SkuId
 
 #Return global license count
-$PBILicenses | Select-Object SkuPartNumber, ConsumedUnits
+$PBILicenses | Select-Object SkuPartNumber, ConsumedUnits, SkuId
 
 #-------------------------------------------------------------------------------
 
@@ -34,5 +34,5 @@ $PBIUsers
 $PBIUsers | Out-File -FilePath .\PowerBI-Licenses.txt
 
 #-------------------------------------------------------------------------------
-
+# Output file location
 Invoke-Item .\
