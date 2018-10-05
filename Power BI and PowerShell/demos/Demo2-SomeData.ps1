@@ -7,10 +7,10 @@ break
 
 Start-Process https://docs.microsoft.com/en-us/rest/api/power-bi/
 
-# This is a wrapper module
+    # This is a wrapper module
     Install-Module MicrosoftPowerBIMgmt -Scope CurrentUser
-    #Currently a bug with the NewtonSoft module
-    Update-Module MicrosoftPowerBIMgmt
+    # Currently a bug with the NewtonSoft.Json dll causing an error
+
 #-------------------------------------------------------
 # List out the available commands
 
@@ -98,4 +98,8 @@ Start-Process https://docs.microsoft.com/en-us/rest/api/power-bi/
     $outputFile = (Resolve-Path .\).Path + "\$($report.name).pbix"
 
     Invoke-RestMethod -Uri $uri -Headers $authHeader -Method GET | Out-File -filepath $outputFile
+
+#-------------------------------------------------------------------------------
+# Output file location
+Invoke-Item .\
 

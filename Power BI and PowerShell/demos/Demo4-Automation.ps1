@@ -6,6 +6,7 @@
 break
 
 # Automate collection of licensing data. 2 methods to do this if you want this to run unattended or with prompted authentication
+# Install-Module PowerBI-Metadata
 
 #-------------------------------------------------------------------------------
 # Get License data across all users
@@ -26,11 +27,12 @@ break
 
 #-------------------------------------------------------------------------------
 # Connect to Power BI API using this Unattended auth function in the PowerBI-Metadata module
+# This method uses the Active Directory Authentication Library (ADAL) to obtain an access token through the OAuth 2.0 protocol.
 
-    #Ive set my email already and my CLientID and CLient Secret using an App created earlier
+    #Ive set my email already and my ClientID and CLient Secret using an App created earlier
     #Here I'm using the secure password file method.
 
-    $token = Get-PBIAuthTokenUnattended -userName $email -clientId $client_ID -client_secret $client_Secret -Verbose
+    $token = Get-PBIAuthTokenUnattended -userName $email -clientId $client_ID -client_secret $client_Secret
 
     # Build the API Header with the auth token
     $authHeader = @{
@@ -72,3 +74,38 @@ break
 
 Start-Process https://app.powerbi.com/groups/09205e39-5f7a-4daa-9b9c-4aaf6cb34cf9/list/datasets
 
+break
+#-------------------------------------------------------
+#* OPTION 1 - Use Credential Manager module - Thanks Josh King (@WindosNZ)
+
+$Splat = @{
+    Target   = 'Power BI Auth Demo'
+    Password = Read-Host -Prompt "Please enter Password for $email"
+    Comment  = 'This helps remind my why I created this'
+    Persist  = 'LocalMachine'
+}
+New-StoredCredential @Splat
+
+$cred = Get-StoredCredential -Target 'Power BI Licenses'
+$pass = $cred.Password
+
+# This should be a secure string
+$pass
+
+#-------------------------------------------------------
+#* OPTION 2 - Use an encrypted text file
+
+$path = (Resolve-Path .\).Path
+$user = $env:UserName
+$file = ($email + "_cred_by_$($user).txt")
+
+# Encrypted Credential file not found. Creating new file
+Read-Host -Prompt "Please enter Password for $email" -AsSecureString | ConvertFrom-SecureString | Out-File "$($path)\$($email)_cred_by_$($user).txt"
+
+# Retrieve file
+$pass = Get-Content ($path + '\' + $file) | ConvertTo-SecureString
+
+# This should be a secure string
+$pass
+
+#-------------------------------------------------------
