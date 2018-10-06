@@ -33,8 +33,8 @@ break
     #Here I'm using the secure password file method.
     $Splat = @{
         clientId       = '7fe7ce40-e0c9-418b-8a67-3332ff941d94'
-        userName           = 'CPorteous@SQLGlasgow.co.uk'
-        client_secret   = $client_Secret
+        userName       = 'CPorteous@SQLGlasgow.co.uk'
+        client_secret  = $client_Secret
     }
 
     $token = Get-PBIAuthTokenUnattended @Splat
