@@ -31,8 +31,13 @@ break
 
     #Ive set my email already and my ClientID and CLient Secret using an App created earlier
     #Here I'm using the secure password file method.
+    $Splat = @{
+        clientId       = '7fe7ce40-e0c9-418b-8a67-3332ff941d94'
+        userName           = 'CPorteous@SQLGlasgow.co.uk'
+        client_secret   = $client_Secret
+    }
 
-    $token = Get-PBIAuthTokenUnattended -userName $email -clientId $client_ID -client_secret $client_Secret
+    $token = Get-PBIAuthTokenUnattended @Splat
 
     # Build the API Header with the auth token
     $authHeader = @{

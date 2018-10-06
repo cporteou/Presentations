@@ -8,7 +8,7 @@ break
 Start-Process https://docs.microsoft.com/en-us/rest/api/power-bi/
 
     # This is a wrapper module
-    Install-Module MicrosoftPowerBIMgmt -Scope CurrentUser
+    Install-Module MicrosoftPowerBIMgmt
     # Currently a bug with the NewtonSoft.Json dll causing an error
 
 #-------------------------------------------------------
@@ -47,14 +47,14 @@ Start-Process https://docs.microsoft.com/en-us/rest/api/power-bi/
     Get-PowerBIWorkspaceUser
 
     #Not yet. Only Add/Remove
-    Add-PowerBIWorkspaceUser -id $workspace.id -UserPrincipalName 'Aburton@sqlglasgow.co.uk' -AccessRight Admin
+    Add-PowerBIWorkspaceUser -id $workspace.id -UserPrincipalName 'Aburton@sqlglasgow.co.uk' -AccessRight Admin -Verbose
 
-    Remove-PowerBIWorkspaceUser -id $workspace.id -UserPrincipalName 'Aburton@sqlglasgow.co.uk'
+    Remove-PowerBIWorkspaceUser -id $workspace.id -UserPrincipalName 'Aburton@sqlglasgow.co.uk' -Verbose
 
 
 
     #Doesnt work for adding members!
-    Add-PowerBIWorkspaceUser -id $workspace.id -UserPrincipalName 'Aburton@sqlglasgow.co.uk' -AccessRight Member
+    Add-PowerBIWorkspaceUser -id $workspace.id -UserPrincipalName 'JHolden@sqlglasgow.co.uk' -AccessRight Member
 
 #-------------------------------------------------------
 # We can see Dataset refresh history by invoking the REST API manually
