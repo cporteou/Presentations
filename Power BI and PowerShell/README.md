@@ -3,9 +3,10 @@
 
 The following modules are required to run the demo code
 
+- (MicrosoftPowerBIMgmt)[https://github.com/Microsoft/powerbi-powershell]
 - Microsoft.ADAL.PowerShell
 - AzureAD
-- PowerBI-Metadata
+- (PowerBI-Metadata)[https://github.com/cporteou/PowerBI-Metadata]
 - CredentialManager
 
 ## References
