@@ -5,6 +5,8 @@
 ### Where has this been presented?
 
 * 25 July 2018 - [Cardiff MSFT Stack User Group](https://www.meetup.com/MSFT-Stack/events/252272109/)
+* 08 Oct 2018 - [DataRelay Newcastle](https://DataRelay.co.uk/)
+* 09 Oct 2018 - [DataRelay Leeds](https://DataRelay.co.uk/)
 
 ## The PowerShell Standards Agency
 
