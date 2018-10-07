@@ -7,7 +7,7 @@ break
 
 #Install-Module AzureAD
 
-#Connect to Azure
+#Connect to Azure with a Prompt
 Connect-AzureAD
 
 #-------------------------------------------------------------------------------

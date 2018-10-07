@@ -1,7 +1,7 @@
 #-------------------------------------------------------
 # Author: Craig Porteous
 # Presentation: Power BI and PowerShell: A match made in Heaven
-# Demo 4: Getting some data
+# Demo 2: Getting some data
 #-------------------------------------------------------
 break
 
@@ -32,6 +32,7 @@ Start-Process https://docs.microsoft.com/en-us/rest/api/power-bi/
     # List out ALL workspaces in the Org - For Power BI Admins
     Get-PowerBIWorkspace -Scope Organization
 
+    #We'll use this workspace in all the demos
     $workspace = Get-PowerBIWorkspace -Name 'PowerShell Demo'
 
 #-------------------------------------------------------
@@ -39,6 +40,7 @@ Start-Process https://docs.microsoft.com/en-us/rest/api/power-bi/
 
     Get-PowerBIWorkspace -Name 'PowerShell Demo' | Get-PowerBIDataset
 
+    #We'll use this dataset in all the demos
     $dataset = Get-PowerBIDataset -WorkspaceId $workspace.Id | Where-Object {$_.Name -eq 'Weather'}
 
 #-------------------------------------------------------
@@ -59,8 +61,6 @@ Start-Process https://docs.microsoft.com/en-us/rest/api/power-bi/
 #-------------------------------------------------------
 # We can see Dataset refresh history by invoking the REST API manually
 # Not currently a function in the module.
-
-    Login-PowerBIServiceAccount
 
     $token = Get-PowerBIAccessToken
 
