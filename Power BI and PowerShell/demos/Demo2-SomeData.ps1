@@ -33,12 +33,12 @@ Start-Process https://docs.microsoft.com/en-us/rest/api/power-bi/
     Get-PowerBIWorkspace -Scope Organization
 
     #We'll use this workspace in all the demos
-    $workspace = Get-PowerBIWorkspace -Name 'PowerShell Demo'
+    $workspace = Get-PowerBIWorkspace -Name 'Power BI Loves PowerShell'
 
 #-------------------------------------------------------
 # Get all datasets in a specific workspace
 
-    Get-PowerBIWorkspace -Name 'PowerShell Demo' | Get-PowerBIDataset
+    Get-PowerBIWorkspace -Name 'Power BI Loves PowerShell' | Get-PowerBIDataset
 
     #We'll use this dataset in all the demos
     $dataset = Get-PowerBIDataset -WorkspaceId $workspace.Id | Where-Object {$_.Name -eq 'Weather'}
@@ -49,14 +49,14 @@ Start-Process https://docs.microsoft.com/en-us/rest/api/power-bi/
     Get-PowerBIWorkspaceUser
 
     #Not yet. Only Add/Remove
-    Add-PowerBIWorkspaceUser -id $workspace.id -UserPrincipalName 'Aburton@sqlglasgow.co.uk' -AccessRight Admin -Verbose
+    Add-PowerBIWorkspaceUser -id $workspace.id -UserPrincipalName 'Aburton@craigporteous.com' -AccessRight Admin -Verbose
 
-    Remove-PowerBIWorkspaceUser -id $workspace.id -UserPrincipalName 'Aburton@sqlglasgow.co.uk' -Verbose
+    Remove-PowerBIWorkspaceUser -id $workspace.id -UserPrincipalName 'Aburton@craigporteous.com' -Verbose
 
 
 
     #Doesnt work for adding members!
-    Add-PowerBIWorkspaceUser -id $workspace.id -UserPrincipalName 'JHolden@sqlglasgow.co.uk' -AccessRight Member
+    Add-PowerBIWorkspaceUser -id $workspace.id -UserPrincipalName 'JHolden@craigporteous.com' -AccessRight Member
 
 #-------------------------------------------------------
 # We can see Dataset refresh history by invoking the REST API manually

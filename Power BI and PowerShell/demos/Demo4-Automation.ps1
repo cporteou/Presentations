@@ -32,8 +32,8 @@ break
     #Ive set my email already and my ClientID and CLient Secret using an App created earlier
     #Here I'm using the secure password file method.
     $Splat = @{
-        clientId       = '7fe7ce40-e0c9-418b-8a67-3332ff941d94'
-        userName       = 'CPorteous@SQLGlasgow.co.uk'
+        clientId       = '4b606914-a276-4482-9304-4c0f965a80c9'
+        userName       = 'Craig@craigporteous.com'
         client_secret  = $client_Secret
     }
 
@@ -56,7 +56,7 @@ break
     $dataset = Invoke-RestMethod -Uri $uri -Headers $authHeader -Method POST -Body $templateDataset
 
 
-    Start-Process https://app.powerbi.com/groups/09205e39-5f7a-4daa-9b9c-4aaf6cb34cf9/list/datasets
+    Start-Process https://app.powerbi.com/groups/$($Workspace.id)/list/datasets
 
 #-------------------------------------------------------------------------------
 # Push data to dataset
@@ -77,7 +77,7 @@ break
 #-------------------------------------------------------------------------------
 # Dataset feeds into report
 
-Start-Process https://app.powerbi.com/groups/09205e39-5f7a-4daa-9b9c-4aaf6cb34cf9/list/datasets
+Start-Process https://app.powerbi.com/groups/$($Workspace.id)/list/datasets
 
 break
 #-------------------------------------------------------

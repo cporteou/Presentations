@@ -47,7 +47,7 @@ Connect-AzureAD
     $dataset = Add-PowerBIDataset -DataSet $ds -WorkspaceId $workspace.id
 
 
-    Start-Process https://app.powerbi.com/groups/09205e39-5f7a-4daa-9b9c-4aaf6cb34cf9/list/datasets
+    Start-Process https://app.powerbi.com/groups/$($Workspace.id)/list/datasets
 
 #-------------------------------------------------------------------------------
 # Push data to dataset using the Power BI Management Module
@@ -61,5 +61,5 @@ Connect-AzureAD
 # Dataset feeds into report
 
 
-    Start-Process https://app.powerbi.com/groups/09205e39-5f7a-4daa-9b9c-4aaf6cb34cf9/list/datasets
+    Start-Process https://app.powerbi.com/groups/$($Workspace.id)/list/datasets
 
