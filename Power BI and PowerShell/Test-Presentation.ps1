@@ -59,7 +59,7 @@ Describe "Testing pre-requisites for presentations" {
         It "Should have PowerPoint Open" {
             (Get-Process POWERPNT -ErrorAction SilentlyContinue) | Should Not BeNullorEmpty
         }
-        It "Should have One PowerPoint Open" {
+        It "Should have only One PowerPoint Open" {
             (Get-Process POWERPNT -ErrorAction SilentlyContinue).Count | Should Be 1
         }
         It "Should have the correct PowerPoint Presentation Open" {
@@ -77,7 +77,7 @@ Describe "Testing pre-requisites for presentations" {
             (Get-Process Slack* -ErrorAction SilentlyContinue).Count | Should Be 0
         }
         It "Default browser set" {
-        (Get-ItemProperty HKCU:\Software\Microsoft\windows\Shell\Associations\UrlAssociations\http\UserChoice).Progid | Should BeLike 'FirefoxURL*'
+        (Get-ItemProperty HKCU:\Software\Microsoft\windows\Shell\Associations\UrlAssociations\http\UserChoice).Progid | Should BeLike 'Chrome*'
         }
     }
 

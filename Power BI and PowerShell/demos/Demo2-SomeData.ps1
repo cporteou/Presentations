@@ -8,7 +8,8 @@ break
 Start-Process https://docs.microsoft.com/en-us/rest/api/power-bi/
 
     # This is a wrapper module
-    Install-Module MicrosoftPowerBIMgmt
+    Install-Module MicrosoftPowerBIMgmt - -Force
+    Get-Module -Name MicrosoftPowerBIMgmt -ListAvailable
     # Currently a bug with the NewtonSoft.Json dll causing an error
 
 #-------------------------------------------------------
@@ -53,12 +54,15 @@ Start-Process https://docs.microsoft.com/en-us/rest/api/power-bi/
 
     Remove-PowerBIWorkspaceUser -id $workspace.id -UserPrincipalName 'Aburton@craigporteous.com' -Verbose
 
-
-
-    #Doesnt work for adding members!
     Add-PowerBIWorkspaceUser -id $workspace.id -UserPrincipalName 'JHolden@craigporteous.com' -AccessRight Member
 
+
+
+    # Didn't work. It is the same for Contributor permissions. This is actually a lack of functionality in the API despite showing in the documentation.
+    # Results in "UnsupportedAccessRightError"
+
 #-------------------------------------------------------
+# The module can't handle the new Dataflows and App API calls yet.
 # We can see Dataset refresh history by invoking the REST API manually
 # Not currently a function in the module.
 
@@ -77,6 +81,15 @@ Start-Process https://docs.microsoft.com/en-us/rest/api/power-bi/
     $datasets = Invoke-RestMethod -Uri $uri -Headers $authHeader -Method GET
 
     $datasets.value
+
+#-------------------------------------------------------
+#Dataflows
+
+$uri = "https://api.powerbi.com/v1.0/myorg/groups/$($workspace.id)/Dataflows"
+
+$dataflows = Invoke-RestMethod -Uri $uri -Headers $authHeader -Method GET
+
+$dataflows.value
 
 #-------------------------------------------------------
 #Reports
@@ -102,4 +115,5 @@ Start-Process https://docs.microsoft.com/en-us/rest/api/power-bi/
 #-------------------------------------------------------------------------------
 # Output file location
 Invoke-Item .\
+
 

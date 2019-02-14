@@ -1,20 +1,28 @@
 {
-    "name": "Power BI Licenses",
+    "name": "Dataset Refresh History",
     "defaultMode": "Push",
     "tables": [
       {
-        "name": "Licenses",
+        "name": "Weather dataset",
         "columns": [
           {
-            "name": "DisplayName",
+            "name": "id",
+            "dataType": "integer"
+          },
+          {
+            "name": "RefreshType",
             "dataType": "string"
           },
           {
-            "name": "UserPrincipalName",
-            "dataType": "string"
+            "name": "startTime",
+            "dataType": "datetime"
           },
           {
-            "name": "License",
+            "name": "endTime",
+            "dataType": "datetime"
+          },
+          {
+            "name": "status",
             "dataType": "string"
           }
         ]

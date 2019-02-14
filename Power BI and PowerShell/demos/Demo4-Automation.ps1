@@ -5,26 +5,12 @@
 #-------------------------------------------------------
 break
 
-# Automate collection of licensing data. 2 methods to do this if you want this to run unattended or with prompted authentication
+# If my demo broke earlier:
+# $workspace.id = 'f213dfd6-9941-4ae1-887d-f1cb837dae1b'
+# $dataset.id = '88e2f8e4-bbca-4366-b37c-fe36d047a2ae'
+
+# Automate collection of dataset refresh data. 2 methods to do this if you want this to run unattended or with prompted authentication
 # Install-Module PowerBI-Metadata
-
-#-------------------------------------------------------------------------------
-# Get License data across all users
-
-    Connect-AzureAD
-
-    #Collect license info
-    $pbiLicenses = Get-AzureADSubscribedSku | Where-Object{$_.SkuPartNumber -like '*POWER_BI*' -and $_.CapabilityStatus -eq 'Enabled'} | Select-Object SkuPartNumber, ConsumedUnits, SkuId
-
-    $pbiUsers = @()
-    #Loop through each license and list all users
-    foreach($license in $pbiLicenses)
-    {
-        $pbiUsers += Get-AzureADUser -All 1 | Where-Object{($_.AssignedLicenses | Where-Object{$_.SkuId -eq $license.SkuId})} | Select-Object DisplayName, UserPrincipalName, @{l='License';e={$license.SkuPartNumber}}
-    }
-
-    $pbiUsersJson = $pbiUsers | ConvertTo-Json
-
 #-------------------------------------------------------------------------------
 # Connect to Power BI API using this Unattended auth function in the PowerBI-Metadata module
 # This method uses the Active Directory Authentication Library (ADAL) to obtain an access token through the OAuth 2.0 protocol.
@@ -53,31 +39,48 @@ break
 
     $uri = "https://api.powerbi.com/v1.0/myorg/groups/$($Workspace.id)/datasets"
 
-    $dataset = Invoke-RestMethod -Uri $uri -Headers $authHeader -Method POST -Body $templateDataset
+    $pushDataset = Invoke-RestMethod -Uri $uri -Headers $authHeader -Method POST -Body $templateDataset
 
 
     Start-Process https://app.powerbi.com/groups/$($Workspace.id)/list/datasets
 
 #-------------------------------------------------------------------------------
+# Source our Weather data. This is the repeatable part.
+
+    #Using the Workspace and datasets we defined in Demo 2 to get and store refresh history
+    $uri = "https://api.powerbi.com/v1.0/myorg/groups/$($workspace.id)/datasets/$($dataset.id)/refreshes"
+
+    $datasets = Invoke-RestMethod -Uri $uri -Headers $authHeader -Method GET
+
+    #Body has to be in JSON format
+    $refreshHistory = $datasets.value | ConvertTo-Json
+
+
+#-------------------------------------------------------------------------------
 # Push data to dataset
 
     #We can get a list of tables
-    $uri = "https://api.powerbi.com/v1.0/myorg/groups/$($Workspace.id)/datasets/$($dataset.id)/tables"
+    $uri = "https://api.powerbi.com/v1.0/myorg/groups/$($Workspace.id)/datasets/$($pushDataset.id)/tables"
 
     $tables = Invoke-RestMethod -Uri $uri -Headers $authHeader -Method GET
 
-    $tables.value
+    $tables.value.name
 
     #Push JSON data to the dataset
-    $uri = "https://api.powerbi.com/v1.0/myorg/groups/$($Workspace.id)/datasets/$($dataset.id)/tables/Licenses/rows"
+    $uri = "https://api.powerbi.com/v1.0/myorg/groups/$($Workspace.id)/datasets/$($pushDataset.id)/tables/$($tables.value.name)/rows"
 
-    Invoke-RestMethod -Uri $uri -Headers $authHeader -Method POST -Body $pbiUsersJson
+    Invoke-RestMethod -Uri $uri -Headers $authHeader -Method POST -Body $refreshHistory
 
 
 #-------------------------------------------------------------------------------
 # Dataset feeds into report
 
 Start-Process https://app.powerbi.com/groups/$($Workspace.id)/list/datasets
+
+#Here's one I made earlier:
+Start-Process https://app.powerbi.com/groups/f213dfd6-9941-4ae1-887d-f1cb837dae1b/reports/65017520-8acd-4380-a62e-82929483a153/ReportSection
+
+
 
 break
 #-------------------------------------------------------
