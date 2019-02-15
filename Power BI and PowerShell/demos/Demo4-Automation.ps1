@@ -63,11 +63,11 @@ break
     $uri = "https://api.powerbi.com/v1.0/myorg/groups/$($Workspace.id)/datasets/$($pushDataset.id)/tables"
 
     $tables = Invoke-RestMethod -Uri $uri -Headers $authHeader -Method GET
-
-    $tables.value.name
+    
+    $tables[0].value.name
 
     #Push JSON data to the dataset
-    $uri = "https://api.powerbi.com/v1.0/myorg/groups/$($Workspace.id)/datasets/$($pushDataset.id)/tables/$($tables.value.name)/rows"
+    $uri = "https://api.powerbi.com/v1.0/myorg/groups/$($Workspace.id)/datasets/$($pushDataset.id)/tables/$($tables[0].value.name)/rows"
 
     Invoke-RestMethod -Uri $uri -Headers $authHeader -Method POST -Body $refreshHistory
 
@@ -79,6 +79,10 @@ Start-Process https://app.powerbi.com/groups/$($Workspace.id)/list/datasets
 
 #Here's one I made earlier:
 Start-Process https://app.powerbi.com/groups/f213dfd6-9941-4ae1-887d-f1cb837dae1b/reports/65017520-8acd-4380-a62e-82929483a153/ReportSection
+
+
+
+
 
 
 

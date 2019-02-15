@@ -17,7 +17,6 @@
 # Credentials
 $myCredential = Get-AutomationPSCredential -Name 'Power BI Login'
 $userName = $myCredential.UserName
-$securePassword = $myCredential.Password
 $password = $myCredential.GetNetworkCredential().Password
 
 #Variables
@@ -39,7 +38,7 @@ $resourceAppID = "https://analysis.windows.net/powerbi/api"
         'resource'=$resourceAppID
         'client_id'=$client_Id
         'grant_type'="password"
-        'username'=$email
+        'username'=$userName
         'password'= $password #! THIS IS IN PLAIN TEXT!
         'scope'="openid"
         'client_secret'=$client_Secret
