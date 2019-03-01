@@ -63,7 +63,7 @@ break
     $uri = "https://api.powerbi.com/v1.0/myorg/groups/$($Workspace.id)/datasets/$($pushDataset.id)/tables"
 
     $tables = Invoke-RestMethod -Uri $uri -Headers $authHeader -Method GET
-    
+
     $tables[0].value.name
 
     #Push JSON data to the dataset

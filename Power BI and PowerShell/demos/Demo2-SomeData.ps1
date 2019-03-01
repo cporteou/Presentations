@@ -8,9 +8,8 @@ break
 Start-Process https://docs.microsoft.com/en-us/rest/api/power-bi/
 
     # This is a wrapper module
-    Install-Module MicrosoftPowerBIMgmt - -Force
+    Install-Module MicrosoftPowerBIMgmt
     Get-Module -Name MicrosoftPowerBIMgmt -ListAvailable
-    # Currently a bug with the NewtonSoft.Json dll causing an error
 
 #-------------------------------------------------------
 # List out the available commands
@@ -100,7 +99,7 @@ $dataflows.value
 
     $reports.value
 
-    Start-Process $reports.value.webUrl
+    Start-Process $reports.value[0].webUrl
 
 #-------------------------------------------------------
 #Let's export a report. Use this to backup content?
