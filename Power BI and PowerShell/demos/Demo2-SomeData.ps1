@@ -8,8 +8,8 @@ break
 Start-Process https://docs.microsoft.com/en-us/rest/api/power-bi/
 
     # This is a wrapper module
-    Install-Module MicrosoftPowerBIMgmt
-    Get-Module -Name MicrosoftPowerBIMgmt -ListAvailable
+    # Install-Module MicrosoftPowerBIMgmt
+    # Get-Module -Name MicrosoftPowerBIMgmt -ListAvailable
 
 #-------------------------------------------------------
 # List out the available commands
@@ -46,14 +46,14 @@ Start-Process https://docs.microsoft.com/en-us/rest/api/power-bi/
 #-------------------------------------------------------
 # How about the users?
 
-    Get-PowerBIWorkspaceUser
 
-    #Not yet. Only Add/Remove
+    #No "Get". Only Add/Remove
     Add-PowerBIWorkspaceUser -id $workspace.id -UserPrincipalName 'Aburton@craigporteous.com' -AccessRight Admin -Verbose
 
     Remove-PowerBIWorkspaceUser -id $workspace.id -UserPrincipalName 'Aburton@craigporteous.com' -Verbose
 
     Add-PowerBIWorkspaceUser -id $workspace.id -UserPrincipalName 'JHolden@craigporteous.com' -AccessRight Member
+
 
 
 
