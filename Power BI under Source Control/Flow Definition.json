@@ -88,7 +88,7 @@
                     "actions": {
                         "Get_All_Workspaces": {
                             "runAfter": {
-                                "Initialize_variable": [
+                                "Initialize_Workspace_Name_variable": [
                                     "Succeeded"
                                 ]
                             },
@@ -162,7 +162,7 @@
                             "actions": {
                                 "Get_all_Reports": {
                                     "runAfter": {
-                                        "Set_variable": [
+                                        "Set_Workspace_Name_variable": [
                                             "Succeeded"
                                         ]
                                     },
@@ -258,7 +258,7 @@
                                                 "authentication": "@parameters('$authentication')"
                                             }
                                         },
-                                        "Create_file": {
+                                        "Create_Power_BI_file_in_OneDrive": {
                                             "runAfter": {
                                                 "Export_Report": [
                                                     "Succeeded"
@@ -299,7 +299,7 @@
                                     },
                                     "type": "Foreach"
                                 },
-                                "Set_variable": {
+                                "Set_Workspace_Name_variable": {
                                     "runAfter": {},
                                     "type": "SetVariable",
                                     "inputs": {
@@ -309,13 +309,13 @@
                                 }
                             },
                             "runAfter": {
-                                "Initialize_variable_2": [
+                                "Parse_Workspace_JSON": [
                                     "Succeeded"
                                 ]
                             },
                             "type": "Foreach"
                         },
-                        "Initialize_variable": {
+                        "Initialize_Workspace_Name_variable": {
                             "runAfter": {},
                             "type": "InitializeVariable",
                             "inputs": {
@@ -323,22 +323,6 @@
                                     {
                                         "name": "WorkspaceName",
                                         "type": "String"
-                                    }
-                                ]
-                            }
-                        },
-                        "Initialize_variable_2": {
-                            "runAfter": {
-                                "Parse_Workspace_JSON": [
-                                    "Succeeded"
-                                ]
-                            },
-                            "type": "InitializeVariable",
-                            "inputs": {
-                                "variables": [
-                                    {
-                                        "name": "Workspaces",
-                                        "type": "Array"
                                     }
                                 ]
                             }
