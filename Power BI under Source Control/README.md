@@ -11,3 +11,5 @@
 [Power BI Sentinel Change Tracking](https://www.powerbisentinel.com/change-tracking/)
 
 [Power BI Sentinel Change Backups](http://www.powerbisentinel.com/backups/)
+
+[Power BI Auditing Events (for Webhooks)](https://docs.microsoft.com/en-us/power-bi/service-admin-auditing#activities-audited-by-power-bi)
