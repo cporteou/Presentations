@@ -14,7 +14,7 @@
 
 ## PowerShell
 
-[Craig Porteous - REST API automation with PowerShell in Azure](https://craigporteous.com)
+[Craig Porteous - REST API automation with PowerShell in Azure](https://craigporteous.com/rest-api-automation-with-powershell-in-azure/)
 
 ## Power BI Sentinel
 
@@ -29,3 +29,5 @@
 [O365 Management API Warning on using Webhooks](https://docs.microsoft.com/en-us/office/office-365-management-api/troubleshooting-the-office-365-management-activity-api#using-webhooks)
 
 [Power BI Auditing Events (for Webhooks)](https://docs.microsoft.com/en-us/power-bi/service-admin-auditing#activities-audited-by-power-bi)
+
+[Start an Azure Automation Runbook from a webhook](https://docs.microsoft.com/en-us/azure/automation/automation-webhooks)
