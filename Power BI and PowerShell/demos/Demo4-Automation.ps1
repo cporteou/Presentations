@@ -53,7 +53,7 @@ break
     $datasets = Invoke-RestMethod -Uri $uri -Headers $authHeader -Method GET
 
     #Body has to be in JSON format
-    $refreshHistory = $datasets.value | ConvertTo-Json
+    $refreshHistory = $datasets.value | Select-Object id, refreshtype, starttime, endtime, status | ConvertTo-Json
 
 
 #-------------------------------------------------------------------------------
