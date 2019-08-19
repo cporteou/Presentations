@@ -2,44 +2,50 @@
 # Supercharge your Reporting Services - An essential toolkit #
 # @cporteous | craigporteous.com | github.com/cporteou       #
 ##############################################################
-
+break
 #------------------------------------------------------
 # Connect to remote Azure VM using session created earlier (if disconnected)
 Enter-PSSession -Name ssrsToolkitVM
 
 
-
-
-
 # Migrate specific folders
 #-----------------------------------------------------------------------------------------------------------------------------------------
 
-$SourceUri, $DestUri = 'http://localhost/ReportServer/ReportService2010.asmx?wsdl'
-$RsFolder = '/Internal Reporting' 
+
+$sourceUri, $destUri = 'http://localhost/ReportServer/ReportService2010.asmx?wsdl'
+$sourceFolder = '/Internal Reporting' 
+$destFolder = '/Copy of Internal Reporting' 
 $tempFolder = (Resolve-Path .\).Path
 
-$SourceProxy = New-RsWebServiceProxy -ReportServerUri $SourceUri
-$DestProxy = New-RsWebServiceProxy -ReportServerUri $DestUri
+
+$SourceProxy, $DestProxy = New-RsWebServiceProxy -ReportServerUri $sourceUri
+
 
 if($Recurse){
-    Out-RsFolderContent -Proxy $SourceProxy -RsFolder $RsFolder -Destination $tempFolder -Recurse
+    Out-RsFolderContent -Proxy $SourceProxy -RsFolder $sourceFolder -Destination $tempFolder -Recurse
 
-    Write-RsFolderContent -Proxy $DestProxy -RsFolder $RsFolder -Path $tempFolder -Recurse -Overwrite
+    Write-RsFolderContent -Proxy $DestProxy -RsFolder $destFolder -Path $tempFolder -Recurse -Overwrite
 }
 else {
-    Out-RsFolderContent -Proxy $SourceProxy -RsFolder $RsFolder -Destination $tempFolder
+    Out-RsFolderContent -Proxy $SourceProxy -RsFolder $sourceFolder -Destination $tempFolder
 
-    Write-RsFolderContent -Proxy $DestProxy -RsFolder $RsFolder -Path $tempFolder -Overwrite
+    Write-RsFolderContent -Proxy $DestProxy -RsFolder $destFolder -Path $tempFolder -Overwrite
 }
 
 
 # Migrate entire environment
 #-----------------------------------------------------------------------------------------------------------------------------------------
 
-#Copy the database using DBATools
-Copy-DbaDatabase -Source DBSOURCE\Instance -Destination DBTARGET\Instance -Database ReportServer -IncludeSupportDbs -WithReplace -BackupRestore -NetworkShare \\Share\SSRS_Migration
+#Prerequisites
+Install-Module -Name DBATools
 
-Connect-RsReportServer -ComputerName $ssrsServer -ReportServerInstance 'MSSQLSERVER' -ReportServerUri $reportServer
-    
+#TODO
+#Copy the database using DBATools
+Copy-DbaDatabase -Source ssrstoolkit\MSSQLSERVER -Destination ssrstoolkit\MSSQLSERVER -Database ReportServer -NewName ReportServer2 -IncludeSupportDbs -WithReplace -BackupRestore -UseLastBackup
+
+#TODO
+Connect-RsReportServer -ReportServerInstance 'Instance2' -ReportServerUri $destUri
+  
+#TODO
 Set-RsDatabase -DatabaseServerName $targetInstance -Name $targetDatabase -IsExistingDatabase -DatabaseCredentialType ServiceAccount -ReportServerVersion $SQLVersion.Value
 
