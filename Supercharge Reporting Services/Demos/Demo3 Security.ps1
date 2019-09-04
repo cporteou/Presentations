@@ -7,24 +7,21 @@ break
 # Connect to remote Azure VM using session created earlier (if disconnected)
 Enter-PSSession -Name ssrsToolkitVM
 
+#Connect to SSRS (if not already connected from Demo 1)
+Connect-RsReportServer -ReportServerUri 'http://ssrstoolkit/ReportServer/ReportService2010.asmx?wsdl'
 
 # Auditing Permissions
 #-----------------------------------------------------------------------------------------------------------------------------------------
 
 #Declare the folder variable
 $directory = '/' #Use '/' for the Root folder
-$rsSecurity = @()
 
 # Returns the security on the chosen parent directory and sub-folders
-$security = Get-RsCatalogItemRole -Path $directory -Recurse | Where-Object TypeName -eq 'Folder'
+$security = Get-RsCatalogItemRole -Path $directory -Recurse | Where-Object TypeName -eq 'Folder' | Select-Object Identity, Path, @{n="Roles";e={$_.Roles.name}}
 
 
-#Add to Security Array
-$rsSecurity = $security | Select-Object Identity, Path, @{n="Roles";e={$_.Roles.name}}
-
-
-$rsSecurity 
-$rsSecurity | Export-csv -Path .\SSRS_Folder_Security.csv -NoTypeInformation
+$security 
+$security | Export-csv -Path .\SSRS_Folder_Security.csv -NoTypeInformation
 
 
 # Updating Permissions - Adding a user/Group to all folders 
@@ -86,7 +83,7 @@ $InheritParent = $true
 
 
 #List out all subfolders under the parent directory
-$items = $rsProxy.ListChildren($folder, $true) | Select-Object TypeName, Path, ID, Name | Where-Object TypeName -eq 'Folder'
+$items = $rsProxy.ListChildren('/', $true) | Select-Object TypeName, Path, ID, Name | Where-Object TypeName -eq 'Folder'
 
 
 #Iterate through every folder 		 
@@ -94,10 +91,12 @@ foreach($item in $items){
 	#TODO $Policies = $rsProxy.GetPolicies($Item.Path, [ref]$InheritParent)
 	#Skip over folders already marked to Inherit permissions. No changes needed.
 	if(-not $InheritParent){
-
+		
 		#Set folder to inherit from Parent security
 		$rsProxy.InheritParentSecurity($item.Path)
 	}
 }
+
+Get-RsCatalogItemRole -Path $directory -Recurse | Where-Object TypeName -eq 'Folder' | Select-Object Identity, Path, @{n="Roles";e={$_.Roles.name}}
 
 #-----------------------------------------------------------------------------------------------------------------------------------------

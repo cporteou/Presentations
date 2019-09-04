@@ -30,5 +30,5 @@ $keyPath = (Resolve-Path .\).Path
 Connect-RsReportServer -ReportServerUri 'http://ssrstoolkit/ReportServer/ReportService2010.asmx?wsdl'
 
 
-Backup-RsEncryptionKey -Password 'Pa$$w0rd' -KeyPath "$keyPath\SSRSKey.snk" -ReportServerInstance 'SSRS' -ReportServerVersion SQLServer2017
+Backup-RsEncryptionKey -Password 'Pa$$w0rd' -KeyPath "$keyPath\SSRSKey.snk" -ReportServerInstance 'SSRS' -ReportServerVersion SQLServer2017 -Verbose
 

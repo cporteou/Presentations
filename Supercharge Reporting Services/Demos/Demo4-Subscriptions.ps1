@@ -7,6 +7,8 @@ break
 # Connect to remote Azure VM using session created earlier (if disconnected)
 Enter-PSSession -Name ssrsToolkitVM
 
+#Connect to SSRS (if not already connected from Demo 1)
+Connect-RsReportServer -ReportServerUri 'http://ssrstoolkit/ReportServer/ReportService2010.asmx?wsdl'
 
 # Update Subscription Owner
 #-----------------------------------------------------------------------------------------------------------------------------------------
@@ -19,9 +21,4 @@ Get-RSSubscription -RsItem '/' | Set-RsSubscription -Owner $newOwner -Verbose
 
 
 Get-RSSubscription -RsItem '/' | Select-Object SubscriptionID, Owner
-
-
-# TITLE
-#-----------------------------------------------------------------------------------------------------------------------------------------
-
 

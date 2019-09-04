@@ -7,6 +7,8 @@ break
 # Connect to remote Azure VM using session created earlier (if disconnected)
 Enter-PSSession -Name ssrsToolkitVM
 
+#Connect to SSRS (if not already connected from Demo 1)
+Connect-RsReportServer -ReportServerUri 'http://ssrstoolkit/ReportServer/ReportService2010.asmx?wsdl'
 
 # Migrate specific folders
 #-----------------------------------------------------------------------------------------------------------------------------------------
@@ -39,13 +41,14 @@ else {
 #Prerequisites
 Install-Module -Name DBATools
 
-#TODO
+
 #Copy the database using DBATools
 Copy-DbaDatabase -Source ssrstoolkit\MSSQLSERVER -Destination ssrstoolkit\MSSQLSERVER -Database ReportServer -NewName ReportServer2 -IncludeSupportDbs -WithReplace -BackupRestore -UseLastBackup
 
-#TODO
 Connect-RsReportServer -ReportServerInstance 'Instance2' -ReportServerUri $destUri
   
-#TODO
 Set-RsDatabase -DatabaseServerName $targetInstance -Name $targetDatabase -IsExistingDatabase -DatabaseCredentialType ServiceAccount -ReportServerVersion $SQLVersion.Value
+
+$keyPath = (Resolve-Path .\).Path
+Restore-RSEncryptionKey -Password 'Pa$$w0rd' -KeyPath "$keyPath\SSRSKey.snk" -ReportServerInstance 'SSRS' -ReportServerVersion SQLServer2017
 
