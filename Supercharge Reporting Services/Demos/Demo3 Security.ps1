@@ -48,24 +48,28 @@ foreach($folder in $folders){
 	#Grant chosen permissions on this folder
 	Grant-RsCatalogItemRole -Identity $groupUserName -RoleName $roleName -Path $directory -Verbose 
 
-	#* This will respect inheritence if the user is already in the policy for the folder. See verbose output
+	#! This will respect inheritence if the user is already in the policy for the folder. See verbose output
 }
 
 
-# Removing a user from all folders
+#Prove it!
+Get-RsCatalogItemRole -Path $directory -Recurse | Where-Object TypeName -eq 'Folder' | Select-Object Identity, Path, @{n="Roles";e={$_.Roles.name}}
+
+
+# Removing a user from a folders. This will break inheritence from the parent
 #-----------------------------------------------------------------------------------------------------------------------------------------
 
 #Username or Group we want to remove
-$groupUserName = 'ssrsToolkit\AndersonD'
+$groupUserName = 'BUILTIN\Administrators'
 $directory = '/Sales Reporting' #Use '/' for the Root folder
 
 
-#Remove access from a specific folder
+#Remove access from a specific folder (and those inheriting)
 Revoke-AccessOnCatalogItem -Identity $groupUserName -Path $directory -Verbose
+Revoke-
 
-
-# Remove access globally on this environment. Alias: Revoke-AccessToRs
-Revoke-RsSystemAccess -Identity $groupUserName -Verbose
+#Prove it!
+Get-RsCatalogItemRole -Path $directory -Recurse | Where-Object TypeName -eq 'Folder' | Select-Object Identity, Path, @{n="Roles";e={$_.Roles.name}}
 
 
 # Revert to Inherit Permissions 
@@ -88,7 +92,7 @@ $items = $rsProxy.ListChildren('/', $true) | Select-Object TypeName, Path, ID, N
 
 #Iterate through every folder 		 
 foreach($item in $items){
-	#TODO $Policies = $rsProxy.GetPolicies($Item.Path, [ref]$InheritParent)
+	$Policies = $rsProxy.GetPolicies($Item.Path, [ref]$InheritParent)
 	#Skip over folders already marked to Inherit permissions. No changes needed.
 	if(-not $InheritParent){
 		
@@ -97,6 +101,8 @@ foreach($item in $items){
 	}
 }
 
+
+#Prove it!
 Get-RsCatalogItemRole -Path $directory -Recurse | Where-Object TypeName -eq 'Folder' | Select-Object Identity, Path, @{n="Roles";e={$_.Roles.name}}
 
 #-----------------------------------------------------------------------------------------------------------------------------------------
