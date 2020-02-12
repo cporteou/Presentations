@@ -1,6 +1,32 @@
 {
 	"name": "diy-blob-to-sql",
 	"properties": {
+		"activities": [
+			{
+				"name": "Copy from Blob to SQL",
+				"type": "Copy",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"enableStaging": false
+				}
+			}
+		],
+		"parameters": {
+			"fileName": {
+				"type": "string"
+			},
+			"filePath": {
+				"type": "string"
+			}
+		},
 		"annotations": []
 	}
 }
