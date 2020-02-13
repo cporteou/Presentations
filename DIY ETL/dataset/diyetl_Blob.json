@@ -16,6 +16,10 @@
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobStorageLocation",
+				"fileName": {
+					"value": "@dataset().filePath",
+					"type": "Expression"
+				},
 				"container": "dataupload"
 			},
 			"columnDelimiter": ",",
