@@ -36,7 +36,7 @@
 						"referenceName": "diyetl_Blob",
 						"type": "DatasetReference",
 						"parameters": {
-							"filePath": {
+							"filename": {
 								"value": "@pipeline().parameters.filePath",
 								"type": "Expression"
 							}
@@ -52,7 +52,7 @@
 			}
 		],
 		"parameters": {
-			"filePath": {
+			"filename": {
 				"type": "string"
 			}
 		},
