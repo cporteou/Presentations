@@ -56,9 +56,9 @@
 					"type": "LinkedServiceReference"
 				},
 				"parameters": {
-					"filePath": {
+					"filename": {
 						"type": "string",
-						"defaultValue": "@pipeline().parameters.filepath"
+						"defaultValue": "@pipeline().parameters.filename"
 					}
 				},
 				"annotations": [],
@@ -67,7 +67,7 @@
 					"location": {
 						"type": "AzureBlobStorageLocation",
 						"fileName": {
-							"value": "@dataset().filePath",
+							"value": "@dataset().filename",
 							"type": "Expression"
 						},
 						"container": "dataupload"
@@ -317,8 +317,8 @@
 								"referenceName": "diyetl_Blob",
 								"type": "DatasetReference",
 								"parameters": {
-									"filePath": {
-										"value": "@pipeline().parameters.filePath",
+									"filename": {
+										"value": "@pipeline().parameters.filename",
 										"type": "Expression"
 									}
 								}
@@ -334,7 +334,7 @@
 					}
 				],
 				"parameters": {
-					"filePath": {
+					"filename": {
 						"type": "string"
 					}
 				},
