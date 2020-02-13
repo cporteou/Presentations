@@ -1,0 +1,349 @@
+{
+	"$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"type": "string",
+			"metadata": "Data Factory name",
+			"defaultValue": "adf-cpo-diyetl"
+		},
+		"cpoblob_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'cpoblob'"
+		},
+		"cposqldb_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'cposqldb'"
+		}
+	},
+	"variables": {
+		"factoryId": "[concat('Microsoft.DataFactory/factories/', parameters('factoryName'))]"
+	},
+	"resources": [
+		{
+			"name": "[concat(parameters('factoryName'), '/cpoblob')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureBlobStorage",
+				"typeProperties": {
+					"connectionString": "[parameters('cpoblob_connectionString')]"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/cposqldb')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureSqlDatabase",
+				"typeProperties": {
+					"connectionString": "[parameters('cposqldb_connectionString')]"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/diyetl_Blob')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "cpoblob",
+					"type": "LinkedServiceReference"
+				},
+				"parameters": {
+					"filePath": {
+						"type": "string",
+						"defaultValue": "@pipeline().parameters.filepath"
+					}
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"fileName": {
+							"value": "@dataset().filePath",
+							"type": "Expression"
+						},
+						"container": "dataupload"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": [
+					{
+						"name": "ACCOUNTREF",
+						"type": "String"
+					},
+					{
+						"name": "NAME",
+						"type": "String"
+					},
+					{
+						"name": "ADDRESS",
+						"type": "String"
+					},
+					{
+						"name": "PROPERTYADDRESS",
+						"type": "String"
+					},
+					{
+						"name": "CREF",
+						"type": "String"
+					},
+					{
+						"name": "MREF",
+						"type": "String"
+					},
+					{
+						"name": "METERTYPE",
+						"type": "String"
+					},
+					{
+						"name": "SERIAL",
+						"type": "String"
+					},
+					{
+						"name": "MIU",
+						"type": "String"
+					},
+					{
+						"name": "SEQUENCE",
+						"type": "String"
+					},
+					{
+						"name": "CATEGORY",
+						"type": "String"
+					},
+					{
+						"name": "BILLING",
+						"type": "String"
+					},
+					{
+						"name": "ONHANDHELD",
+						"type": "String"
+					},
+					{
+						"name": "LOCATIONTYPE",
+						"type": "String"
+					},
+					{
+						"name": "ROUTE",
+						"type": "String"
+					},
+					{
+						"name": "METERTAGS",
+						"type": "String"
+					},
+					{
+						"name": "SCHEDULE",
+						"type": "String"
+					},
+					{
+						"name": "EXPORTTIME",
+						"type": "String"
+					},
+					{
+						"name": "HANDHELDID",
+						"type": "String"
+					},
+					{
+						"name": "READER",
+						"type": "String"
+					},
+					{
+						"name": "TEAM",
+						"type": "String"
+					},
+					{
+						"name": "READDATE",
+						"type": "String"
+					},
+					{
+						"name": "READTIME",
+						"type": "String"
+					},
+					{
+						"name": "DISTANCEFROMREAD",
+						"type": "String"
+					},
+					{
+						"name": "INDEXM3",
+						"type": "String"
+					},
+					{
+						"name": "INDEXL",
+						"type": "String"
+					},
+					{
+						"name": "TAMPER",
+						"type": "String"
+					},
+					{
+						"name": "READTYPE",
+						"type": "String"
+					},
+					{
+						"name": "BACKFLOW",
+						"type": "String"
+					},
+					{
+						"name": "READERCOMMENT",
+						"type": "String"
+					},
+					{
+						"name": "GPS",
+						"type": "String"
+					},
+					{
+						"name": "LEAKCURRENTLY",
+						"type": "String"
+					},
+					{
+						"name": "LEAKPREVIOUSLY",
+						"type": "String"
+					},
+					{
+						"name": "SKIP1",
+						"type": "String"
+					},
+					{
+						"name": "SKIP2",
+						"type": "String"
+					},
+					{
+						"name": "POSTCODE",
+						"type": "String"
+					},
+					{
+						"name": "OSGB EASTING",
+						"type": "String"
+					},
+					{
+						"name": "OSGB NORTHING",
+						"type": "String"
+					},
+					{
+						"name": "NONDOMESTIC",
+						"type": "String"
+					},
+					{
+						"name": "OWNER",
+						"type": "String"
+					},
+					{
+						"name": "LOCATIONNOTES",
+						"type": "String"
+					},
+					{
+						"name": "SLA",
+						"type": "String"
+					},
+					{
+						"name": "DMA",
+						"type": "String"
+					}
+				]
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/cpoblob')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/cposqldw')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "cposqldb",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [],
+				"typeProperties": {
+					"schema": "dbo",
+					"table": "SharePointData"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/cposqldb')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/diy-blob-to-sql')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Copy from Blob to SQL",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "DelimitedTextSource",
+								"storeSettings": {
+									"type": "AzureBlobStorageReadSettings",
+									"recursive": true
+								},
+								"formatSettings": {
+									"type": "DelimitedTextReadSettings"
+								}
+							},
+							"sink": {
+								"type": "AzureSqlSink",
+								"tableOption": "autoCreate"
+							},
+							"enableStaging": false
+						},
+						"inputs": [
+							{
+								"referenceName": "diyetl_Blob",
+								"type": "DatasetReference",
+								"parameters": {
+									"filePath": {
+										"value": "@pipeline().parameters.filePath",
+										"type": "Expression"
+									}
+								}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "cposqldw",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					}
+				],
+				"parameters": {
+					"filePath": {
+						"type": "string"
+					}
+				},
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/diyetl_Blob')]",
+				"[concat(variables('factoryId'), '/datasets/cposqldw')]"
+			]
+		}
+	]
+}
