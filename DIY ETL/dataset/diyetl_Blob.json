@@ -6,9 +6,9 @@
 			"type": "LinkedServiceReference"
 		},
 		"parameters": {
-			"filePath": {
+			"filename": {
 				"type": "string",
-				"defaultValue": "@pipeline().parameters.filepath"
+				"defaultValue": "@pipeline().parameters.filename"
 			}
 		},
 		"annotations": [],
