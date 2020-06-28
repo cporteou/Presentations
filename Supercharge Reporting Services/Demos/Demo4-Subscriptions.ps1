@@ -14,7 +14,7 @@ break
 # Update Subscription Owner
 #-----------------------------------------------------------------------------------------------------------------------------------------
 
-    $newOwner = 'ssrsToolkit\JamesH'  
+    $newOwner = 'ssrsToolkit\AmosB'  
 
 
 #Get All subscriptions and update owner

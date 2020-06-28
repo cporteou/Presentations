@@ -45,7 +45,7 @@ break
 #Iterate through every folder 
 	foreach($folder in $folders){
 		#Grant chosen permissions on this folder
-		Grant-RsCatalogItemRole -Identity $groupUserName -RoleName $roleName -Path $folder -Verbose 
+		Grant-RsCatalogItemRole -Identity $groupUserName -RoleName $roleName -Path $folder.Path -Verbose 
 
 		#! This will respect inheritence if the user is already in the policy for the folder. See verbose output
 	}
@@ -91,7 +91,7 @@ break
 
 #Iterate through every folder 		 
 	foreach($item in $items){
-		$Policies = $rsProxy.GetPolicies($Item.Path, [ref]$InheritParent)
+		$rsProxy.GetPolicies($Item.Path, [ref]$InheritParent)
 		#Skip over folders already marked to Inherit permissions. No changes needed.
 		if(-not $InheritParent){
 			
