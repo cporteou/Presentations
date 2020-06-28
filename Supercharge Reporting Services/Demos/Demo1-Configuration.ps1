@@ -11,7 +11,7 @@ break
 # Prerequisites
 #------------------------------------------------------
 
-    Install-Module -Name ReportingServicesTools
+    Install-Module -Name ReportingServicesTools -scope CurrentUser
 
 
 #What commands are available

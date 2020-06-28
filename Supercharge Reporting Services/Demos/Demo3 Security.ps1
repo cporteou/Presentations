@@ -45,7 +45,7 @@ break
 #Iterate through every folder 
 	foreach($folder in $folders){
 		#Grant chosen permissions on this folder
-		Grant-RsCatalogItemRole -Identity $groupUserName -RoleName $roleName -Path $directory -Verbose 
+		Grant-RsCatalogItemRole -Identity $groupUserName -RoleName $roleName -Path $folder -Verbose 
 
 		#! This will respect inheritence if the user is already in the policy for the folder. See verbose output
 	}
@@ -102,6 +102,6 @@ break
 
 
 #Prove it!
-	Get-RsCatalogItemRole -Path $directory -Recurse | Where-Object TypeName -eq 'Folder' | Select-Object Identity, Path, @{n="Roles";e={$_.Roles.name}}
+	Get-RsCatalogItemRole -Path '/' -Recurse | Where-Object TypeName -eq 'Folder' | Select-Object Identity, Path, @{n="Roles";e={$_.Roles.name}}
 
 #-----------------------------------------------------------------------------------------------------------------------------------------
