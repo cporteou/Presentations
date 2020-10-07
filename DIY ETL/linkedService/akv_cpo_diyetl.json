@@ -1,0 +1,10 @@
+{
+	"name": "akv_cpo_diyetl",
+	"properties": {
+		"annotations": [],
+		"type": "AzureKeyVault",
+		"typeProperties": {
+			"baseUrl": "https://kv-cpo-diyetl.vault.azure.net/"
+		}
+	}
+}
