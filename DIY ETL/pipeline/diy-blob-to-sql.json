@@ -58,6 +58,9 @@
 		"parameters": {
 			"filename": {
 				"type": "string"
+			},
+			"filepath": {
+				"type": "string"
 			}
 		},
 		"annotations": []
