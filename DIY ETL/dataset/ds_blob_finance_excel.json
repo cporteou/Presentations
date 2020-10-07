@@ -13,14 +13,12 @@
 		"annotations": [],
 		"type": "Excel",
 		"typeProperties": {
-			"sheetName": "Sheet1",
 			"location": {
 				"type": "AzureBlobStorageLocation",
 				"fileName": {
 					"value": "@dataset().filepath",
 					"type": "Expression"
-				},
-				"container": "financedocs"
+				}
 			},
 			"firstRowAsHeader": true
 		},
