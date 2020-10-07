@@ -16,7 +16,6 @@
 		"annotations": [],
 		"type": "Excel",
 		"typeProperties": {
-			"sheetName": "Sheet1",
 			"location": {
 				"type": "AzureBlobStorageLocation",
 				"fileName": {
@@ -24,7 +23,7 @@
 					"type": "Expression"
 				},
 				"container": {
-					"value": "substring(@dataset().filepath,length(@dataset().filepath)-length(@dataset().filename),length(@dataset().filename))",
+					"value": "@(substring(dataset().filepath,length(dataset().filepath)-length(dataset().filename),length(dataset().filename)))",
 					"type": "Expression"
 				}
 			},
