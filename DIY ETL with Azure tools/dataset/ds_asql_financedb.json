@@ -12,5 +12,6 @@
 			"schema": "dbo",
 			"table": "financerecords"
 		}
-	}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
 }
