@@ -20,7 +20,8 @@
 					"type": "Expression"
 				},
 				"container": "financedocs"
-			}
+			},
+			"firstRowAsHeader": true
 		},
 		"schema": []
 	}
