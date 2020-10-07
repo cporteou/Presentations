@@ -3,7 +3,7 @@
 	"properties": {
 		"activities": [
 			{
-				"name": "Copy from Blob to SQL",
+				"name": "Copy data",
 				"type": "Copy",
 				"dependsOn": [],
 				"policy": {
@@ -16,26 +16,35 @@
 				"userProperties": [],
 				"typeProperties": {
 					"source": {
-						"type": "DelimitedTextSource",
+						"type": "ExcelSource",
 						"storeSettings": {
 							"type": "AzureBlobStorageReadSettings",
 							"recursive": true
-						},
-						"formatSettings": {
-							"type": "DelimitedTextReadSettings"
 						}
 					},
 					"sink": {
-						"type": "AzureSqlSink",
-						"tableOption": "autoCreate"
+						"type": "AzureSqlSink"
 					},
-					"enableStaging": false
+					"enableStaging": false,
+					"dataIntegrationUnits": 2,
+					"translator": {
+						"type": "TabularTranslator",
+						"typeConversion": true,
+						"typeConversionSettings": {
+							"allowDataTruncation": true,
+							"treatBooleanAsNumber": false
+						}
+					}
 				},
 				"inputs": [
 					{
-						"referenceName": "diyetl_Blob",
+						"referenceName": "ds_blob_finance_excel",
 						"type": "DatasetReference",
 						"parameters": {
+							"filepath": {
+								"value": "@pipeline().parameters.filepath",
+								"type": "Expression"
+							},
 							"filename": {
 								"value": "@pipeline().parameters.filename",
 								"type": "Expression"
@@ -45,7 +54,7 @@
 				],
 				"outputs": [
 					{
-						"referenceName": "cposqldw",
+						"referenceName": "ds_asql_financedb",
 						"type": "DatasetReference"
 					}
 				]
@@ -53,6 +62,9 @@
 		],
 		"parameters": {
 			"filename": {
+				"type": "string"
+			},
+			"filepath": {
 				"type": "string"
 			}
 		},
