@@ -1,0 +1,27 @@
+{
+	"name": "ds_blob_finance_excel",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ls_blob_finance",
+			"type": "LinkedServiceReference"
+		},
+		"parameters": {
+			"filepath": {
+				"type": "string"
+			}
+		},
+		"annotations": [],
+		"type": "Excel",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"fileName": {
+					"value": "@dataset().filepath",
+					"type": "Expression"
+				},
+				"container": "financedocs"
+			}
+		},
+		"schema": []
+	}
+}
