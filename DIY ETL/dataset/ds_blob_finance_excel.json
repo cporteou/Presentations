@@ -24,7 +24,7 @@
 					"type": "Expression"
 				},
 				"container": {
-					"value": "@(substring(dataset().filepath,length(dataset().filepath)-length(dataset().filename),length(dataset().filename)))",
+					"value": "@substring(dataset().filepath,sub(length(dataset().filepath),length(dataset().filename)),length(dataset().filename))",
 					"type": "Expression"
 				}
 			},
