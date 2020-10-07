@@ -8,16 +8,22 @@
 		"parameters": {
 			"filepath": {
 				"type": "string"
+			},
+			"filename": {
+				"type": "string"
 			}
 		},
 		"annotations": [],
 		"type": "Excel",
 		"typeProperties": {
-			"sheetName": "Sheet1",
 			"location": {
 				"type": "AzureBlobStorageLocation",
 				"fileName": {
-					"value": "@dataset().filepath",
+					"value": "@dataset().filename",
+					"type": "Expression"
+				},
+				"container": {
+					"value": "substring(@dataset().filepath,length(@dataset().filepath)-length(@dataset().filename),length(@dataset().filename))",
 					"type": "Expression"
 				}
 			},
