@@ -5,11 +5,14 @@
 		"factoryName": {
 			"value": "adf-cpo-diyetl"
 		},
-		"cpoblob_connectionString": {
-			"value": ""
+		"akv_cpo_diyetl_properties_typeProperties_baseUrl": {
+			"value": "https://kv-cpo-diyetl.vault.azure.net/"
 		},
-		"cposqldb_connectionString": {
-			"value": ""
+		"ls_blob_finance_properties_typeProperties_connectionString_secretName": {
+			"value": "akv-blob-conn"
+		},
+		"ls_asql_diyetldb_properties_typeProperties_connectionString_secretName": {
+			"value": "akv-asql-admin-conn"
 		}
 	}
 }

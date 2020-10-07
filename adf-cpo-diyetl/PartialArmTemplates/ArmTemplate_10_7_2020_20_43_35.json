@@ -6,18 +6,6 @@
 			"type": "string",
 			"metadata": "Data Factory name",
 			"defaultValue": "adf-cpo-diyetl"
-		},
-		"akv_cpo_diyetl_properties_typeProperties_baseUrl": {
-			"type": "string",
-			"defaultValue": "https://kv-cpo-diyetl.vault.azure.net/"
-		},
-		"ls_blob_finance_properties_typeProperties_connectionString_secretName": {
-			"type": "string",
-			"defaultValue": "akv-blob-conn"
-		},
-		"ls_asql_diyetldb_properties_typeProperties_connectionString_secretName": {
-			"type": "string",
-			"defaultValue": "akv-asql-admin-conn"
 		}
 	},
 	"variables": {
@@ -83,8 +71,7 @@
 						"outputs": [
 							{
 								"referenceName": "ds_asql_financedb",
-								"type": "DatasetReference",
-								"parameters": {}
+								"type": "DatasetReference"
 							}
 						]
 					}
@@ -112,7 +99,7 @@
 				"annotations": [],
 				"type": "AzureKeyVault",
 				"typeProperties": {
-					"baseUrl": "[parameters('akv_cpo_diyetl_properties_typeProperties_baseUrl')]"
+					"baseUrl": "https://kv-cpo-diyetl.vault.azure.net/"
 				}
 			},
 			"dependsOn": []
@@ -131,7 +118,7 @@
 							"referenceName": "akv_cpo_diyetl",
 							"type": "LinkedServiceReference"
 						},
-						"secretName": "[parameters('ls_blob_finance_properties_typeProperties_connectionString_secretName')]"
+						"secretName": "akv-blob-conn"
 					}
 				}
 			},
@@ -197,7 +184,7 @@
 							"referenceName": "akv_cpo_diyetl",
 							"type": "LinkedServiceReference"
 						},
-						"secretName": "[parameters('ls_asql_diyetldb_properties_typeProperties_connectionString_secretName')]"
+						"secretName": "akv-asql-admin-conn"
 					}
 				}
 			},

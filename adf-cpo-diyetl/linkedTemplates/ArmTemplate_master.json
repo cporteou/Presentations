@@ -7,13 +7,17 @@
 			"metadata": "Data Factory name",
 			"defaultValue": "adf-cpo-diyetl"
 		},
-		"cpoblob_connectionString": {
-			"type": "secureString",
-			"metadata": "Secure string for 'connectionString' of 'cpoblob'"
+		"akv_cpo_diyetl_properties_typeProperties_baseUrl": {
+			"type": "string",
+			"defaultValue": "https://kv-cpo-diyetl.vault.azure.net/"
 		},
-		"cposqldb_connectionString": {
-			"type": "secureString",
-			"metadata": "Secure string for 'connectionString' of 'cposqldb'"
+		"ls_blob_finance_properties_typeProperties_connectionString_secretName": {
+			"type": "string",
+			"defaultValue": "akv-blob-conn"
+		},
+		"ls_asql_diyetldb_properties_typeProperties_connectionString_secretName": {
+			"type": "string",
+			"defaultValue": "akv-asql-admin-conn"
 		},
 		"containerUri": {
 			"type": "string",
@@ -29,7 +33,7 @@
 	},
 	"resources": [
 		{
-			"name": "ArmTemplate_0",
+			"name": "adf-cpo-diyetl_ArmTemplate_0",
 			"type": "Microsoft.Resources/deployments",
 			"apiVersion": "2018-02-01",
 			"properties": {
@@ -42,11 +46,14 @@
 					"factoryName": {
 						"value": "[parameters('factoryName')]"
 					},
-					"cpoblob_connectionString": {
-						"value": "[parameters('cpoblob_connectionString')]"
+					"akv_cpo_diyetl_properties_typeProperties_baseUrl": {
+						"value": "[parameters('akv_cpo_diyetl_properties_typeProperties_baseUrl')]"
 					},
-					"cposqldb_connectionString": {
-						"value": "[parameters('cposqldb_connectionString')]"
+					"ls_blob_finance_properties_typeProperties_connectionString_secretName": {
+						"value": "[parameters('ls_blob_finance_properties_typeProperties_connectionString_secretName')]"
+					},
+					"ls_asql_diyetldb_properties_typeProperties_connectionString_secretName": {
+						"value": "[parameters('ls_asql_diyetldb_properties_typeProperties_connectionString_secretName')]"
 					}
 				}
 			},

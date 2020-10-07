@@ -7,13 +7,17 @@
 			"metadata": "Data Factory name",
 			"defaultValue": "adf-cpo-diyetl"
 		},
-		"cpoblob_connectionString": {
-			"type": "secureString",
-			"metadata": "Secure string for 'connectionString' of 'cpoblob'"
+		"akv_cpo_diyetl_properties_typeProperties_baseUrl": {
+			"type": "string",
+			"defaultValue": "https://kv-cpo-diyetl.vault.azure.net/"
 		},
-		"cposqldb_connectionString": {
-			"type": "secureString",
-			"metadata": "Secure string for 'connectionString' of 'cposqldb'"
+		"ls_blob_finance_properties_typeProperties_connectionString_secretName": {
+			"type": "string",
+			"defaultValue": "akv-blob-conn"
+		},
+		"ls_asql_diyetldb_properties_typeProperties_connectionString_secretName": {
+			"type": "string",
+			"defaultValue": "akv-asql-admin-conn"
 		}
 	},
 	"variables": {
@@ -21,248 +25,113 @@
 	},
 	"resources": [
 		{
-			"name": "[concat(parameters('factoryName'), '/cpoblob')]",
+			"name": "[concat(parameters('factoryName'), '/akv_cpo_diyetl')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureKeyVault",
+				"typeProperties": {
+					"baseUrl": "[parameters('akv_cpo_diyetl_properties_typeProperties_baseUrl')]"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/ls_blob_finance')]",
 			"type": "Microsoft.DataFactory/factories/linkedServices",
 			"apiVersion": "2018-06-01",
 			"properties": {
 				"annotations": [],
 				"type": "AzureBlobStorage",
 				"typeProperties": {
-					"connectionString": "[parameters('cpoblob_connectionString')]"
+					"connectionString": {
+						"type": "AzureKeyVaultSecret",
+						"store": {
+							"referenceName": "akv_cpo_diyetl",
+							"type": "LinkedServiceReference"
+						},
+						"secretName": "[parameters('ls_blob_finance_properties_typeProperties_connectionString_secretName')]"
+					}
 				}
 			},
-			"dependsOn": []
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/akv_cpo_diyetl')]"
+			]
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/cposqldb')]",
+			"name": "[concat(parameters('factoryName'), '/ls_asql_diyetldb')]",
 			"type": "Microsoft.DataFactory/factories/linkedServices",
 			"apiVersion": "2018-06-01",
 			"properties": {
 				"annotations": [],
 				"type": "AzureSqlDatabase",
 				"typeProperties": {
-					"connectionString": "[parameters('cposqldb_connectionString')]"
+					"connectionString": {
+						"type": "AzureKeyVaultSecret",
+						"store": {
+							"referenceName": "akv_cpo_diyetl",
+							"type": "LinkedServiceReference"
+						},
+						"secretName": "[parameters('ls_asql_diyetldb_properties_typeProperties_connectionString_secretName')]"
+					}
 				}
 			},
-			"dependsOn": []
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/akv_cpo_diyetl')]"
+			]
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/diyetl_Blob')]",
+			"name": "[concat(parameters('factoryName'), '/ds_blob_finance_excel')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
 			"properties": {
 				"linkedServiceName": {
-					"referenceName": "cpoblob",
+					"referenceName": "ls_blob_finance",
 					"type": "LinkedServiceReference"
 				},
 				"parameters": {
+					"filepath": {
+						"type": "string"
+					},
 					"filename": {
-						"type": "string",
-						"defaultValue": "@pipeline().parameters.filename"
+						"type": "string"
 					}
 				},
 				"annotations": [],
-				"type": "DelimitedText",
+				"type": "Excel",
 				"typeProperties": {
+					"sheetName": "Sheet1",
 					"location": {
 						"type": "AzureBlobStorageLocation",
 						"fileName": {
 							"value": "@dataset().filename",
 							"type": "Expression"
 						},
-						"container": "dataupload"
+						"folderPath": {
+							"value": "@dataset().filepath",
+							"type": "Expression"
+						},
+						"container": {
+							"value": "financedocs",
+							"type": "Expression"
+						}
 					},
-					"columnDelimiter": ",",
-					"escapeChar": "\\",
-					"firstRowAsHeader": true,
-					"quoteChar": "\""
+					"firstRowAsHeader": true
 				},
-				"schema": [
-					{
-						"name": "ACCOUNTREF",
-						"type": "String"
-					},
-					{
-						"name": "NAME",
-						"type": "String"
-					},
-					{
-						"name": "ADDRESS",
-						"type": "String"
-					},
-					{
-						"name": "PROPERTYADDRESS",
-						"type": "String"
-					},
-					{
-						"name": "CREF",
-						"type": "String"
-					},
-					{
-						"name": "MREF",
-						"type": "String"
-					},
-					{
-						"name": "METERTYPE",
-						"type": "String"
-					},
-					{
-						"name": "SERIAL",
-						"type": "String"
-					},
-					{
-						"name": "MIU",
-						"type": "String"
-					},
-					{
-						"name": "SEQUENCE",
-						"type": "String"
-					},
-					{
-						"name": "CATEGORY",
-						"type": "String"
-					},
-					{
-						"name": "BILLING",
-						"type": "String"
-					},
-					{
-						"name": "ONHANDHELD",
-						"type": "String"
-					},
-					{
-						"name": "LOCATIONTYPE",
-						"type": "String"
-					},
-					{
-						"name": "ROUTE",
-						"type": "String"
-					},
-					{
-						"name": "METERTAGS",
-						"type": "String"
-					},
-					{
-						"name": "SCHEDULE",
-						"type": "String"
-					},
-					{
-						"name": "EXPORTTIME",
-						"type": "String"
-					},
-					{
-						"name": "HANDHELDID",
-						"type": "String"
-					},
-					{
-						"name": "READER",
-						"type": "String"
-					},
-					{
-						"name": "TEAM",
-						"type": "String"
-					},
-					{
-						"name": "READDATE",
-						"type": "String"
-					},
-					{
-						"name": "READTIME",
-						"type": "String"
-					},
-					{
-						"name": "DISTANCEFROMREAD",
-						"type": "String"
-					},
-					{
-						"name": "INDEXM3",
-						"type": "String"
-					},
-					{
-						"name": "INDEXL",
-						"type": "String"
-					},
-					{
-						"name": "TAMPER",
-						"type": "String"
-					},
-					{
-						"name": "READTYPE",
-						"type": "String"
-					},
-					{
-						"name": "BACKFLOW",
-						"type": "String"
-					},
-					{
-						"name": "READERCOMMENT",
-						"type": "String"
-					},
-					{
-						"name": "GPS",
-						"type": "String"
-					},
-					{
-						"name": "LEAKCURRENTLY",
-						"type": "String"
-					},
-					{
-						"name": "LEAKPREVIOUSLY",
-						"type": "String"
-					},
-					{
-						"name": "SKIP1",
-						"type": "String"
-					},
-					{
-						"name": "SKIP2",
-						"type": "String"
-					},
-					{
-						"name": "POSTCODE",
-						"type": "String"
-					},
-					{
-						"name": "OSGB EASTING",
-						"type": "String"
-					},
-					{
-						"name": "OSGB NORTHING",
-						"type": "String"
-					},
-					{
-						"name": "NONDOMESTIC",
-						"type": "String"
-					},
-					{
-						"name": "OWNER",
-						"type": "String"
-					},
-					{
-						"name": "LOCATIONNOTES",
-						"type": "String"
-					},
-					{
-						"name": "SLA",
-						"type": "String"
-					},
-					{
-						"name": "DMA",
-						"type": "String"
-					}
-				]
+				"schema": []
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/cpoblob')]"
+				"[concat(variables('factoryId'), '/linkedServices/ls_blob_finance')]"
 			]
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/cposqldw')]",
+			"name": "[concat(parameters('factoryName'), '/ds_asql_financedb')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
 			"properties": {
 				"linkedServiceName": {
-					"referenceName": "cposqldb",
+					"referenceName": "ls_asql_diyetldb",
 					"type": "LinkedServiceReference"
 				},
 				"annotations": [],
@@ -270,11 +139,11 @@
 				"schema": [],
 				"typeProperties": {
 					"schema": "dbo",
-					"table": "SharePointData"
+					"table": "financerecords"
 				}
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/cposqldb')]"
+				"[concat(variables('factoryId'), '/linkedServices/ls_asql_diyetldb')]"
 			]
 		},
 		{
@@ -284,7 +153,7 @@
 			"properties": {
 				"activities": [
 					{
-						"name": "Copy from Blob to SQL",
+						"name": "Copy data",
 						"type": "Copy",
 						"dependsOn": [],
 						"policy": {
@@ -297,26 +166,35 @@
 						"userProperties": [],
 						"typeProperties": {
 							"source": {
-								"type": "DelimitedTextSource",
+								"type": "ExcelSource",
 								"storeSettings": {
 									"type": "AzureBlobStorageReadSettings",
 									"recursive": true
-								},
-								"formatSettings": {
-									"type": "DelimitedTextReadSettings"
 								}
 							},
 							"sink": {
-								"type": "AzureSqlSink",
-								"tableOption": "autoCreate"
+								"type": "AzureSqlSink"
 							},
-							"enableStaging": false
+							"enableStaging": false,
+							"dataIntegrationUnits": 2,
+							"translator": {
+								"type": "TabularTranslator",
+								"typeConversion": true,
+								"typeConversionSettings": {
+									"allowDataTruncation": true,
+									"treatBooleanAsNumber": false
+								}
+							}
 						},
 						"inputs": [
 							{
-								"referenceName": "diyetl_Blob",
+								"referenceName": "ds_blob_finance_excel",
 								"type": "DatasetReference",
 								"parameters": {
+									"filepath": {
+										"value": "@pipeline().parameters.filepath",
+										"type": "Expression"
+									},
 									"filename": {
 										"value": "@pipeline().parameters.filename",
 										"type": "Expression"
@@ -326,7 +204,7 @@
 						],
 						"outputs": [
 							{
-								"referenceName": "cposqldw",
+								"referenceName": "ds_asql_financedb",
 								"type": "DatasetReference",
 								"parameters": {}
 							}
@@ -336,13 +214,16 @@
 				"parameters": {
 					"filename": {
 						"type": "string"
+					},
+					"filepath": {
+						"type": "string"
 					}
 				},
 				"annotations": []
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/diyetl_Blob')]",
-				"[concat(variables('factoryId'), '/datasets/cposqldw')]"
+				"[concat(variables('factoryId'), '/datasets/ds_blob_finance_excel')]",
+				"[concat(variables('factoryId'), '/datasets/ds_asql_financedb')]"
 			]
 		}
 	]
