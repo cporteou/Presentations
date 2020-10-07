@@ -1,0 +1,17 @@
+{
+	"name": "ls_blob_finance",
+	"properties": {
+		"annotations": [],
+		"type": "AzureBlobStorage",
+		"typeProperties": {
+			"connectionString": {
+				"type": "AzureKeyVaultSecret",
+				"store": {
+					"referenceName": "akv_cpo_diyetl",
+					"type": "LinkedServiceReference"
+				},
+				"secretName": "akv-blob-conn"
+			}
+		}
+	}
+}
