@@ -43,6 +43,10 @@
 							"filepath": {
 								"value": "@pipeline().parameters.filepath",
 								"type": "Expression"
+							},
+							"filename": {
+								"value": "@pipeline().parameters.filename",
+								"type": "Expression"
 							}
 						}
 					}
