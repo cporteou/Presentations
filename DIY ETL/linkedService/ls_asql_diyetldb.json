@@ -1,0 +1,17 @@
+{
+	"name": "ls_asql_diyetldb",
+	"properties": {
+		"annotations": [],
+		"type": "AzureSqlDatabase",
+		"typeProperties": {
+			"connectionString": {
+				"type": "AzureKeyVaultSecret",
+				"store": {
+					"referenceName": "akv_cpo_diyetl",
+					"type": "LinkedServiceReference"
+				},
+				"secretName": "akv-asql-admin-conn"
+			}
+		}
+	}
+}
