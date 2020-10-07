@@ -1,0 +1,12 @@
+{
+	"name": "ds_asql_financedb",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ls_asql_diyetldb",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": []
+	}
+}
