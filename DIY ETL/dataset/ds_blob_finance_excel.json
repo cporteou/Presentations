@@ -16,15 +16,18 @@
 		"annotations": [],
 		"type": "Excel",
 		"typeProperties": {
-			"sheetName": "Sheet1",
 			"location": {
 				"type": "AzureBlobStorageLocation",
 				"fileName": {
 					"value": "@dataset().filename",
 					"type": "Expression"
 				},
+				"folderPath": {
+					"value": "@dataset().filepath",
+					"type": "Expression"
+				},
 				"container": {
-					"value": "@substring(dataset().filepath,sub(length(dataset().filepath),length(dataset().filename)),length(dataset().filename))",
+					"value": "financedocs",
 					"type": "Expression"
 				}
 			},
