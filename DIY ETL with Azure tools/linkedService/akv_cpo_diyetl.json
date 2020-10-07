@@ -1,0 +1,11 @@
+{
+	"name": "akv_cpo_diyetl",
+	"type": "Microsoft.DataFactory/factories/linkedservices",
+	"properties": {
+		"annotations": [],
+		"type": "AzureKeyVault",
+		"typeProperties": {
+			"baseUrl": "https://kv-cpo-diyetl.vault.azure.net/"
+		}
+	}
+}

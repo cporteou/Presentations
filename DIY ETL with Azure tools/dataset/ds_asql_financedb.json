@@ -1,8 +1,8 @@
 {
-	"name": "cposqldw",
+	"name": "ds_asql_financedb",
 	"properties": {
 		"linkedServiceName": {
-			"referenceName": "cposqldb",
+			"referenceName": "ls_asql_diyetldb",
 			"type": "LinkedServiceReference"
 		},
 		"annotations": [],
@@ -10,7 +10,7 @@
 		"schema": [],
 		"typeProperties": {
 			"schema": "dbo",
-			"table": "SharePointData"
+			"table": "financerecords"
 		}
 	},
 	"type": "Microsoft.DataFactory/factories/datasets"
