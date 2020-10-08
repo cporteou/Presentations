@@ -96,10 +96,12 @@
 		],
 		"parameters": {
 			"blobname": {
-				"type": "string"
+				"type": "string",
+				"defaultValue": "@triggerBody().fileName"
 			},
 			"blobpath": {
-				"type": "string"
+				"type": "string",
+				"defaultValue": "@triggerBody().folderPath"
 			}
 		},
 		"variables": {
