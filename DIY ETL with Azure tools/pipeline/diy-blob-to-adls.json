@@ -5,7 +5,14 @@
 			{
 				"name": "Copy data",
 				"type": "Copy",
-				"dependsOn": [],
+				"dependsOn": [
+					{
+						"activity": "Set date variable",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
 				"policy": {
 					"timeout": "7.00:00:00",
 					"retry": 0,
@@ -47,15 +54,44 @@
 				"inputs": [
 					{
 						"referenceName": "ds_blob_reviews",
-						"type": "DatasetReference"
+						"type": "DatasetReference",
+						"parameters": {
+							"filename": {
+								"value": "@pipeline().parameters.blobname",
+								"type": "Expression"
+							}
+						}
 					}
 				],
 				"outputs": [
 					{
 						"referenceName": "ds_adls_raw_parquet",
-						"type": "DatasetReference"
+						"type": "DatasetReference",
+						"parameters": {
+							"filename": {
+								"value": "@concat(pipeline().parameters.blobname, '.parquet')",
+								"type": "Expression"
+							},
+							"filepath": {
+								"value": "@{formatDateTime(variables('filetime'),'yyyy')}/@{formatDateTime(variables('filetime'),'MMM')}/@{formatDateTime(variables('filetime'),'dd')}",
+								"type": "Expression"
+							}
+						}
 					}
 				]
+			},
+			{
+				"name": "Set date variable",
+				"type": "SetVariable",
+				"dependsOn": [],
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "filetime",
+					"value": {
+						"value": "@pipeline().TriggerTime",
+						"type": "Expression"
+					}
+				}
 			}
 		],
 		"parameters": {
@@ -64,6 +100,11 @@
 			},
 			"blobpath": {
 				"type": "string"
+			}
+		},
+		"variables": {
+			"filetime": {
+				"type": "String"
 			}
 		},
 		"annotations": []
