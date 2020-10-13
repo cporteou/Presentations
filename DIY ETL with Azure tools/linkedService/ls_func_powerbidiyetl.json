@@ -1,0 +1,18 @@
+{
+	"name": "ls_func_powerbidiyetl",
+	"properties": {
+		"annotations": [],
+		"type": "AzureFunction",
+		"typeProperties": {
+			"functionAppUrl": "https://powerbi-diyetl.azurewebsites.net",
+			"functionKey": {
+				"type": "AzureKeyVaultSecret",
+				"store": {
+					"referenceName": "akv_cpo_diyetl",
+					"type": "LinkedServiceReference"
+				},
+				"secretName": "akv-func-powerbidiyetl-key"
+			}
+		}
+	}
+}
