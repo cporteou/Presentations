@@ -1,6 +1,29 @@
 {
 	"name": "diy-pbi-to-sql",
 	"properties": {
+		"activities": [
+			{
+				"name": "Function powerbi-diyetl",
+				"type": "AzureFunctionActivity",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"functionName": "http-powerbi-diyetl",
+					"method": "GET"
+				},
+				"linkedServiceName": {
+					"referenceName": "ls_func_powerbidiyetl",
+					"type": "LinkedServiceReference"
+				}
+			}
+		],
 		"annotations": []
 	}
 }
