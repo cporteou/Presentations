@@ -25,7 +25,7 @@
 					"functionName": "http-powerbi-diyetl",
 					"method": "POST",
 					"body": {
-						"value": "{\n\"blobname\": @variables('blobname')\n}",
+						"value": "{\n\"blobname\": \"@variables('blobname')\"\n}",
 						"type": "Expression"
 					}
 				},
@@ -42,7 +42,7 @@
 				"typeProperties": {
 					"variableName": "blobname",
 					"value": {
-						"value": "concat(\"PBI_Security_\",utcNow())",
+						"value": "@concat('PBI_Security_',utcNow())",
 						"type": "Expression"
 					}
 				}
