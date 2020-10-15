@@ -31,6 +31,14 @@
 			"type": "string",
 			"defaultValue": "https://powerbi-diyetl.azurewebsites.net"
 		},
+		"tr-blob_properties_diy-blob-to-adls_parameters_blobname": {
+			"type": "string",
+			"defaultValue": "@trigger().outputs.body.fileName"
+		},
+		"tr-blob_properties_diy-blob-to-adls_parameters_blobpath": {
+			"type": "string",
+			"defaultValue": "@trigger().outputs.body.folderPath"
+		},
 		"tr-blob_properties_typeProperties_scope": {
 			"type": "string",
 			"defaultValue": "/subscriptions/d9368466-6a82-4d83-bd2d-bb9f333fb2a7/resourceGroups/cpo-diyetl/providers/Microsoft.Storage/storageAccounts/cpodiyetl"
@@ -936,7 +944,10 @@
 							"referenceName": "diy-blob-to-adls",
 							"type": "PipelineReference"
 						},
-						"parameters": {}
+						"parameters": {
+							"blobname": "[parameters('tr-blob_properties_diy-blob-to-adls_parameters_blobname')]",
+							"blobpath": "[parameters('tr-blob_properties_diy-blob-to-adls_parameters_blobpath')]"
+						}
 					}
 				],
 				"type": "BlobEventsTrigger",

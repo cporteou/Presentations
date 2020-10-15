@@ -23,6 +23,12 @@
 		"ls_func_powerbidiyetl_properties_typeProperties_functionAppUrl": {
 			"value": "https://powerbi-diyetl.azurewebsites.net"
 		},
+		"tr-blob_properties_diy-blob-to-adls_parameters_blobname": {
+			"value": "@trigger().outputs.body.fileName"
+		},
+		"tr-blob_properties_diy-blob-to-adls_parameters_blobpath": {
+			"value": "@trigger().outputs.body.folderPath"
+		},
 		"tr-blob_properties_typeProperties_scope": {
 			"value": "/subscriptions/d9368466-6a82-4d83-bd2d-bb9f333fb2a7/resourceGroups/cpo-diyetl/providers/Microsoft.Storage/storageAccounts/cpodiyetl"
 		},
