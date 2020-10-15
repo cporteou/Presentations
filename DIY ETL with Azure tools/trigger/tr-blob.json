@@ -8,6 +8,10 @@
 				"pipelineReference": {
 					"referenceName": "diy-blob-to-adls",
 					"type": "PipelineReference"
+				},
+				"parameters": {
+					"blobname": "@trigger().outputs.body.fileName",
+					"blobpath": "@trigger().outputs.body.folderPath"
 				}
 			}
 		],
