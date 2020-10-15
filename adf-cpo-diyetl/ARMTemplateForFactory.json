@@ -31,11 +31,11 @@
 			"type": "string",
 			"defaultValue": "https://powerbi-diyetl.azurewebsites.net"
 		},
-		"tr-blob_properties_diy-blob-to-adls_parameters_blobname": {
+		"tr-blob_properties_2 diy-blob-to-adls_parameters_blobname": {
 			"type": "string",
 			"defaultValue": "@trigger().outputs.body.fileName"
 		},
-		"tr-blob_properties_diy-blob-to-adls_parameters_blobpath": {
+		"tr-blob_properties_2 diy-blob-to-adls_parameters_blobpath": {
 			"type": "string",
 			"defaultValue": "@trigger().outputs.body.folderPath"
 		},
@@ -49,7 +49,7 @@
 	},
 	"resources": [
 		{
-			"name": "[concat(parameters('factoryName'), '/diy-blob-to-adls')]",
+			"name": "[concat(parameters('factoryName'), '/2 diy-blob-to-adls')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
 			"properties": {
@@ -249,7 +249,7 @@
 			]
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/diy-blob-to-sql')]",
+			"name": "[concat(parameters('factoryName'), '/1 diy-blob-to-sql')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
 			"properties": {
@@ -410,7 +410,7 @@
 			]
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/diy-pbi-to-sql')]",
+			"name": "[concat(parameters('factoryName'), '/3 diy-pbi-to-sql')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
 			"properties": {
@@ -857,12 +857,12 @@
 				"pipelines": [
 					{
 						"pipelineReference": {
-							"referenceName": "diy-blob-to-adls",
+							"referenceName": "2 diy-blob-to-adls",
 							"type": "PipelineReference"
 						},
 						"parameters": {
-							"blobname": "[parameters('tr-blob_properties_diy-blob-to-adls_parameters_blobname')]",
-							"blobpath": "[parameters('tr-blob_properties_diy-blob-to-adls_parameters_blobpath')]"
+							"blobname": "[parameters('tr-blob_properties_2 diy-blob-to-adls_parameters_blobname')]",
+							"blobpath": "[parameters('tr-blob_properties_2 diy-blob-to-adls_parameters_blobpath')]"
 						}
 					}
 				],
@@ -877,7 +877,7 @@
 				}
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/pipelines/diy-blob-to-adls')]"
+				"[concat(variables('factoryId'), '/pipelines/2 diy-blob-to-adls')]"
 			]
 		},
 		{

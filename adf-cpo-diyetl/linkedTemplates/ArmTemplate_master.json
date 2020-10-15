@@ -31,11 +31,11 @@
 			"type": "string",
 			"defaultValue": "https://powerbi-diyetl.azurewebsites.net"
 		},
-		"tr-blob_properties_diy-blob-to-adls_parameters_blobname": {
+		"tr-blob_properties_2 diy-blob-to-adls_parameters_blobname": {
 			"type": "string",
 			"defaultValue": "@trigger().outputs.body.fileName"
 		},
-		"tr-blob_properties_diy-blob-to-adls_parameters_blobpath": {
+		"tr-blob_properties_2 diy-blob-to-adls_parameters_blobpath": {
 			"type": "string",
 			"defaultValue": "@trigger().outputs.body.folderPath"
 		},
@@ -88,11 +88,11 @@
 					"ls_func_powerbidiyetl_properties_typeProperties_functionAppUrl": {
 						"value": "[parameters('ls_func_powerbidiyetl_properties_typeProperties_functionAppUrl')]"
 					},
-					"tr-blob_properties_diy-blob-to-adls_parameters_blobname": {
-						"value": "[parameters('tr-blob_properties_diy-blob-to-adls_parameters_blobname')]"
+					"tr-blob_properties_2 diy-blob-to-adls_parameters_blobname": {
+						"value": "[parameters('tr-blob_properties_2 diy-blob-to-adls_parameters_blobname')]"
 					},
-					"tr-blob_properties_diy-blob-to-adls_parameters_blobpath": {
-						"value": "[parameters('tr-blob_properties_diy-blob-to-adls_parameters_blobpath')]"
+					"tr-blob_properties_2 diy-blob-to-adls_parameters_blobpath": {
+						"value": "[parameters('tr-blob_properties_2 diy-blob-to-adls_parameters_blobpath')]"
 					},
 					"tr-blob_properties_typeProperties_scope": {
 						"value": "[parameters('tr-blob_properties_typeProperties_scope')]"

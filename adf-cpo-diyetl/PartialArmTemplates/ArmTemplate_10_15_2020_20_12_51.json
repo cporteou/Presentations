@@ -6,369 +6,12 @@
 			"type": "string",
 			"metadata": "Data Factory name",
 			"defaultValue": "adf-cpo-diyetl"
-		},
-		"ls_adls_diyetl_accountKey": {
-			"type": "secureString",
-			"metadata": "Secure string for 'accountKey' of 'ls_adls_diyetl'"
-		},
-		"akv_cpo_diyetl_properties_typeProperties_baseUrl": {
-			"type": "string",
-			"defaultValue": "https://kv-cpo-diyetl.vault.azure.net/"
-		},
-		"ls_adls_diyetl_properties_typeProperties_url": {
-			"type": "string",
-			"defaultValue": "https://adlscpodiyetl.dfs.core.windows.net"
-		},
-		"ls_asql_diyetldb_properties_typeProperties_connectionString_secretName": {
-			"type": "string",
-			"defaultValue": "akv-asql-admin-conn"
-		},
-		"ls_blob_finance_properties_typeProperties_connectionString_secretName": {
-			"type": "string",
-			"defaultValue": "akv-blob-conn"
-		},
-		"ls_func_powerbidiyetl_properties_typeProperties_functionAppUrl": {
-			"type": "string",
-			"defaultValue": "https://powerbi-diyetl.azurewebsites.net"
-		},
-		"tr-blob_properties_2 diy-blob-to-adls_parameters_blobname": {
-			"type": "string",
-			"defaultValue": "@trigger().outputs.body.fileName"
-		},
-		"tr-blob_properties_2 diy-blob-to-adls_parameters_blobpath": {
-			"type": "string",
-			"defaultValue": "@trigger().outputs.body.folderPath"
-		},
-		"tr-blob_properties_typeProperties_scope": {
-			"type": "string",
-			"defaultValue": "/subscriptions/d9368466-6a82-4d83-bd2d-bb9f333fb2a7/resourceGroups/cpo-diyetl/providers/Microsoft.Storage/storageAccounts/cpodiyetl"
 		}
 	},
 	"variables": {
 		"factoryId": "[concat('Microsoft.DataFactory/factories/', parameters('factoryName'))]"
 	},
 	"resources": [
-		{
-			"name": "[concat(parameters('factoryName'), '/akv_cpo_diyetl')]",
-			"type": "Microsoft.DataFactory/factories/linkedServices",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"annotations": [],
-				"type": "AzureKeyVault",
-				"typeProperties": {
-					"baseUrl": "[parameters('akv_cpo_diyetl_properties_typeProperties_baseUrl')]"
-				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/ls_adls_diyetl')]",
-			"type": "Microsoft.DataFactory/factories/linkedServices",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"annotations": [],
-				"type": "AzureBlobFS",
-				"typeProperties": {
-					"url": "[parameters('ls_adls_diyetl_properties_typeProperties_url')]",
-					"accountKey": {
-						"type": "SecureString",
-						"value": "[parameters('ls_adls_diyetl_accountKey')]"
-					}
-				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/ds_adls_raw_parquet')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "ls_adls_diyetl",
-					"type": "LinkedServiceReference"
-				},
-				"parameters": {
-					"filename": {
-						"type": "string"
-					},
-					"filepath": {
-						"type": "string"
-					}
-				},
-				"annotations": [],
-				"type": "Parquet",
-				"typeProperties": {
-					"location": {
-						"type": "AzureBlobFSLocation",
-						"fileName": {
-							"value": "@dataset().filename",
-							"type": "Expression"
-						},
-						"folderPath": {
-							"value": "@dataset().filepath",
-							"type": "Expression"
-						},
-						"fileSystem": "raw"
-					},
-					"compressionCodec": "snappy"
-				},
-				"schema": []
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/ls_adls_diyetl')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/ls_asql_diyetldb')]",
-			"type": "Microsoft.DataFactory/factories/linkedServices",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"annotations": [],
-				"type": "AzureSqlDatabase",
-				"typeProperties": {
-					"connectionString": {
-						"type": "AzureKeyVaultSecret",
-						"store": {
-							"referenceName": "akv_cpo_diyetl",
-							"type": "LinkedServiceReference"
-						},
-						"secretName": "[parameters('ls_asql_diyetldb_properties_typeProperties_connectionString_secretName')]"
-					}
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/akv_cpo_diyetl')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/ls_blob_finance')]",
-			"type": "Microsoft.DataFactory/factories/linkedServices",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"annotations": [],
-				"type": "AzureBlobStorage",
-				"typeProperties": {
-					"connectionString": {
-						"type": "AzureKeyVaultSecret",
-						"store": {
-							"referenceName": "akv_cpo_diyetl",
-							"type": "LinkedServiceReference"
-						},
-						"secretName": "[parameters('ls_blob_finance_properties_typeProperties_connectionString_secretName')]"
-					}
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/akv_cpo_diyetl')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/ls_func_powerbidiyetl')]",
-			"type": "Microsoft.DataFactory/factories/linkedServices",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"annotations": [],
-				"type": "AzureFunction",
-				"typeProperties": {
-					"functionAppUrl": "[parameters('ls_func_powerbidiyetl_properties_typeProperties_functionAppUrl')]",
-					"functionKey": {
-						"type": "AzureKeyVaultSecret",
-						"store": {
-							"referenceName": "akv_cpo_diyetl",
-							"type": "LinkedServiceReference"
-						},
-						"secretName": "akv-func-powerbidiyetl-key"
-					}
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/akv_cpo_diyetl')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/ds_asql_financedb')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "ls_asql_diyetldb",
-					"type": "LinkedServiceReference"
-				},
-				"annotations": [],
-				"type": "AzureSqlTable",
-				"schema": [],
-				"typeProperties": {
-					"schema": "dbo",
-					"table": "financerecords"
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/ls_asql_diyetldb')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/ds_blob_finance_excel')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "ls_blob_finance",
-					"type": "LinkedServiceReference"
-				},
-				"parameters": {
-					"filepath": {
-						"type": "string"
-					},
-					"filename": {
-						"type": "string"
-					}
-				},
-				"annotations": [],
-				"type": "Excel",
-				"typeProperties": {
-					"sheetName": "Sheet1",
-					"location": {
-						"type": "AzureBlobStorageLocation",
-						"fileName": {
-							"value": "@dataset().filename",
-							"type": "Expression"
-						},
-						"folderPath": {
-							"value": "@dataset().filepath",
-							"type": "Expression"
-						},
-						"container": {
-							"value": "financedocs",
-							"type": "Expression"
-						}
-					},
-					"firstRowAsHeader": true
-				},
-				"schema": []
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/ls_blob_finance')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/ds_blob_reviews')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "ls_blob_finance",
-					"type": "LinkedServiceReference"
-				},
-				"parameters": {
-					"filename": {
-						"type": "string"
-					}
-				},
-				"annotations": [],
-				"type": "DelimitedText",
-				"typeProperties": {
-					"location": {
-						"type": "AzureBlobStorageLocation",
-						"fileName": {
-							"value": "@dataset().filename",
-							"type": "Expression"
-						},
-						"container": "reviewdata"
-					},
-					"columnDelimiter": ",",
-					"escapeChar": "\\",
-					"quoteChar": "\""
-				},
-				"schema": []
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/ls_blob_finance')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/ds_blob_pbimetadata')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "ls_blob_finance",
-					"type": "LinkedServiceReference"
-				},
-				"parameters": {
-					"blobname": {
-						"type": "string"
-					}
-				},
-				"annotations": [],
-				"type": "Json",
-				"typeProperties": {
-					"location": {
-						"type": "AzureBlobStorageLocation",
-						"fileName": {
-							"value": "@dataset().blobname",
-							"type": "Expression"
-						},
-						"container": "outcontainer"
-					}
-				},
-				"schema": {}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/ls_blob_finance')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/ds_asql_pbimetadatadb')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "ls_asql_diyetldb",
-					"type": "LinkedServiceReference"
-				},
-				"annotations": [],
-				"type": "AzureSqlTable",
-				"schema": [
-					{
-						"name": "GroupName",
-						"type": "nvarchar"
-					},
-					{
-						"name": "userType",
-						"type": "nvarchar"
-					},
-					{
-						"name": "AuditDate",
-						"type": "datetime",
-						"precision": 23,
-						"scale": 3
-					},
-					{
-						"name": "GroupID",
-						"type": "nvarchar"
-					},
-					{
-						"name": "UserEmail",
-						"type": "nvarchar"
-					},
-					{
-						"name": "UserName",
-						"type": "nvarchar"
-					},
-					{
-						"name": "UserRole",
-						"type": "nvarchar"
-					}
-				],
-				"typeProperties": {
-					"schema": "dbo",
-					"table": "pbisecurity"
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/ls_asql_diyetldb')]"
-			]
-		},
 		{
 			"name": "[concat(parameters('factoryName'), '/2 diy-blob-to-adls')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
@@ -563,11 +206,7 @@
 				},
 				"annotations": []
 			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/ds_blob_reviews')]",
-				"[concat(variables('factoryId'), '/datasets/ds_adls_raw_parquet')]",
-				"[concat(variables('factoryId'), '/linkedServices/ls_asql_diyetldb')]"
-			]
+			"dependsOn": []
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/1 diy-blob-to-sql')]",
@@ -635,8 +274,7 @@
 						"outputs": [
 							{
 								"referenceName": "ds_asql_financedb",
-								"type": "DatasetReference",
-								"parameters": {}
+								"type": "DatasetReference"
 							}
 						]
 					},
@@ -724,11 +362,7 @@
 				"annotations": [],
 				"lastPublishTime": "2020-10-07T19:43:33Z"
 			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/ds_blob_finance_excel')]",
-				"[concat(variables('factoryId'), '/datasets/ds_asql_financedb')]",
-				"[concat(variables('factoryId'), '/linkedServices/ls_asql_diyetldb')]"
-			]
+			"dependsOn": []
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/3 diy-pbi-to-sql')]",
@@ -758,7 +392,6 @@
 						"typeProperties": {
 							"functionName": "http-powerbi-diyetl",
 							"method": "POST",
-							"headers": {},
 							"body": {
 								"value": "@json(concat('{\"blobname\": \"', variables('blobname'), '\"}'))",
 								"type": "Expression"
@@ -839,8 +472,7 @@
 						"outputs": [
 							{
 								"referenceName": "ds_asql_pbimetadatadb",
-								"type": "DatasetReference",
-								"parameters": {}
+								"type": "DatasetReference"
 							}
 						]
 					},
@@ -924,12 +556,7 @@
 				},
 				"annotations": []
 			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/ls_func_powerbidiyetl')]",
-				"[concat(variables('factoryId'), '/datasets/ds_blob_pbimetadata')]",
-				"[concat(variables('factoryId'), '/datasets/ds_asql_pbimetadatadb')]",
-				"[concat(variables('factoryId'), '/linkedServices/ls_asql_diyetldb')]"
-			]
+			"dependsOn": []
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/tr-blob')]",
@@ -937,7 +564,7 @@
 			"apiVersion": "2018-06-01",
 			"properties": {
 				"annotations": [],
-				"runtimeState": "Stopped",
+				"runtimeState": "Started",
 				"pipelines": [
 					{
 						"pipelineReference": {
@@ -945,8 +572,8 @@
 							"type": "PipelineReference"
 						},
 						"parameters": {
-							"blobname": "[parameters('tr-blob_properties_2 diy-blob-to-adls_parameters_blobname')]",
-							"blobpath": "[parameters('tr-blob_properties_2 diy-blob-to-adls_parameters_blobpath')]"
+							"blobname": "@trigger().outputs.body.fileName",
+							"blobpath": "@trigger().outputs.body.folderPath"
 						}
 					}
 				],
@@ -954,7 +581,7 @@
 				"typeProperties": {
 					"blobPathBeginsWith": "/reviewdata/blobs/",
 					"ignoreEmptyBlobs": true,
-					"scope": "[parameters('tr-blob_properties_typeProperties_scope')]",
+					"scope": "/subscriptions/d9368466-6a82-4d83-bd2d-bb9f333fb2a7/resourceGroups/cpo-diyetl/providers/Microsoft.Storage/storageAccounts/cpodiyetl",
 					"events": [
 						"Microsoft.Storage.BlobCreated"
 					]
