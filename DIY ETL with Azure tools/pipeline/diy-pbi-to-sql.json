@@ -16,7 +16,11 @@
 				"userProperties": [],
 				"typeProperties": {
 					"functionName": "http-powerbi-diyetl",
-					"method": "GET"
+					"method": "POST",
+					"body": {
+						"value": "{\n\"blobname\": @concat(\"Security\",utcNow())\n}",
+						"type": "Expression"
+					}
 				},
 				"linkedServiceName": {
 					"referenceName": "ls_func_powerbidiyetl",
