@@ -7,17 +7,33 @@
 			"metadata": "Data Factory name",
 			"defaultValue": "adf-cpo-diyetl"
 		},
+		"ls_adls_diyetl_accountKey": {
+			"type": "secureString",
+			"metadata": "Secure string for 'accountKey' of 'ls_adls_diyetl'"
+		},
 		"akv_cpo_diyetl_properties_typeProperties_baseUrl": {
 			"type": "string",
 			"defaultValue": "https://kv-cpo-diyetl.vault.azure.net/"
+		},
+		"ls_adls_diyetl_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://adlscpodiyetl.dfs.core.windows.net"
+		},
+		"ls_asql_diyetldb_properties_typeProperties_connectionString_secretName": {
+			"type": "string",
+			"defaultValue": "akv-asql-admin-conn"
 		},
 		"ls_blob_finance_properties_typeProperties_connectionString_secretName": {
 			"type": "string",
 			"defaultValue": "akv-blob-conn"
 		},
-		"ls_asql_diyetldb_properties_typeProperties_connectionString_secretName": {
+		"ls_func_powerbidiyetl_properties_typeProperties_functionAppUrl": {
 			"type": "string",
-			"defaultValue": "akv-asql-admin-conn"
+			"defaultValue": "https://powerbi-diyetl.azurewebsites.net"
+		},
+		"tr-blob_properties_typeProperties_scope": {
+			"type": "string",
+			"defaultValue": "/subscriptions/d9368466-6a82-4d83-bd2d-bb9f333fb2a7/resourceGroups/cpo-diyetl/providers/Microsoft.Storage/storageAccounts/cpodiyetl"
 		},
 		"containerUri": {
 			"type": "string",
@@ -46,14 +62,26 @@
 					"factoryName": {
 						"value": "[parameters('factoryName')]"
 					},
+					"ls_adls_diyetl_accountKey": {
+						"value": "[parameters('ls_adls_diyetl_accountKey')]"
+					},
 					"akv_cpo_diyetl_properties_typeProperties_baseUrl": {
 						"value": "[parameters('akv_cpo_diyetl_properties_typeProperties_baseUrl')]"
+					},
+					"ls_adls_diyetl_properties_typeProperties_url": {
+						"value": "[parameters('ls_adls_diyetl_properties_typeProperties_url')]"
+					},
+					"ls_asql_diyetldb_properties_typeProperties_connectionString_secretName": {
+						"value": "[parameters('ls_asql_diyetldb_properties_typeProperties_connectionString_secretName')]"
 					},
 					"ls_blob_finance_properties_typeProperties_connectionString_secretName": {
 						"value": "[parameters('ls_blob_finance_properties_typeProperties_connectionString_secretName')]"
 					},
-					"ls_asql_diyetldb_properties_typeProperties_connectionString_secretName": {
-						"value": "[parameters('ls_asql_diyetldb_properties_typeProperties_connectionString_secretName')]"
+					"ls_func_powerbidiyetl_properties_typeProperties_functionAppUrl": {
+						"value": "[parameters('ls_func_powerbidiyetl_properties_typeProperties_functionAppUrl')]"
+					},
+					"tr-blob_properties_typeProperties_scope": {
+						"value": "[parameters('tr-blob_properties_typeProperties_scope')]"
 					}
 				}
 			},

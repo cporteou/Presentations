@@ -5,14 +5,26 @@
 		"factoryName": {
 			"value": "adf-cpo-diyetl"
 		},
+		"ls_adls_diyetl_accountKey": {
+			"value": ""
+		},
 		"akv_cpo_diyetl_properties_typeProperties_baseUrl": {
 			"value": "https://kv-cpo-diyetl.vault.azure.net/"
+		},
+		"ls_adls_diyetl_properties_typeProperties_url": {
+			"value": "https://adlscpodiyetl.dfs.core.windows.net"
+		},
+		"ls_asql_diyetldb_properties_typeProperties_connectionString_secretName": {
+			"value": "akv-asql-admin-conn"
 		},
 		"ls_blob_finance_properties_typeProperties_connectionString_secretName": {
 			"value": "akv-blob-conn"
 		},
-		"ls_asql_diyetldb_properties_typeProperties_connectionString_secretName": {
-			"value": "akv-asql-admin-conn"
+		"ls_func_powerbidiyetl_properties_typeProperties_functionAppUrl": {
+			"value": "https://powerbi-diyetl.azurewebsites.net"
+		},
+		"tr-blob_properties_typeProperties_scope": {
+			"value": "/subscriptions/d9368466-6a82-4d83-bd2d-bb9f333fb2a7/resourceGroups/cpo-diyetl/providers/Microsoft.Storage/storageAccounts/cpodiyetl"
 		},
 		"containerUri": {
 			"value": ""
