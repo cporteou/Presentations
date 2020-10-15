@@ -6,7 +6,7 @@
 		"pipelines": [
 			{
 				"pipelineReference": {
-					"referenceName": "diy-blob-to-adls",
+					"referenceName": "2 diy-blob-to-adls",
 					"type": "PipelineReference"
 				},
 				"parameters": {
