@@ -1,0 +1,26 @@
+{
+	"name": "ds_blob_pbimetadata",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ls_blob_finance",
+			"type": "LinkedServiceReference"
+		},
+		"parameters": {
+			"blobname": {
+				"type": "string"
+			}
+		},
+		"annotations": [],
+		"type": "Json",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"fileName": {
+					"value": "@dataset().blobname",
+					"type": "Expression"
+				},
+				"container": "outcontainer"
+			}
+		}
+	}
+}
