@@ -84,6 +84,9 @@
 							"type": "JsonReadSettings"
 						}
 					},
+					"sink": {
+						"type": "AzureSqlSink"
+					},
 					"enableStaging": false
 				},
 				"inputs": [
@@ -96,6 +99,12 @@
 								"type": "Expression"
 							}
 						}
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "ds_asql_pbimetadatadb",
+						"type": "DatasetReference"
 					}
 				]
 			},

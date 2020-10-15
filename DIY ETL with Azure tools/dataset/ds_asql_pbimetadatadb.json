@@ -1,0 +1,47 @@
+{
+	"name": "ds_asql_pbimetadatadb",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ls_asql_diyetldb",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [
+			{
+				"name": "GroupName",
+				"type": "nvarchar"
+			},
+			{
+				"name": "userType",
+				"type": "nvarchar"
+			},
+			{
+				"name": "AuditDate",
+				"type": "datetime",
+				"precision": 23,
+				"scale": 3
+			},
+			{
+				"name": "GroupID",
+				"type": "nvarchar"
+			},
+			{
+				"name": "UserEmail",
+				"type": "nvarchar"
+			},
+			{
+				"name": "UserName",
+				"type": "nvarchar"
+			},
+			{
+				"name": "UserRole",
+				"type": "nvarchar"
+			}
+		],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "pbisecurity"
+		}
+	}
+}
