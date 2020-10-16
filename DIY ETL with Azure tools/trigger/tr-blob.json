@@ -1,0 +1,29 @@
+{
+	"name": "tr-blob",
+	"properties": {
+		"annotations": [],
+		"runtimeState": "Started",
+		"pipelines": [
+			{
+				"pipelineReference": {
+					"referenceName": "2 diy-blob-to-adls",
+					"type": "PipelineReference"
+				},
+				"parameters": {
+					"blobname": "@trigger().outputs.body.fileName",
+					"blobpath": "@trigger().outputs.body.folderPath"
+				}
+			}
+		],
+		"type": "BlobEventsTrigger",
+		"typeProperties": {
+			"blobPathBeginsWith": "/reviewdata/blobs/blobs/",
+			"blobPathEndsWith": ".csv",
+			"ignoreEmptyBlobs": true,
+			"scope": "/subscriptions/d9368466-6a82-4d83-bd2d-bb9f333fb2a7/resourceGroups/cpo-diyetl/providers/Microsoft.Storage/storageAccounts/cpodiyetl",
+			"events": [
+				"Microsoft.Storage.BlobCreated"
+			]
+		}
+	}
+}
