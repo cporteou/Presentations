@@ -49,206 +49,6 @@
 	},
 	"resources": [
 		{
-			"name": "[concat(parameters('factoryName'), '/2 diy-blob-to-adls')]",
-			"type": "Microsoft.DataFactory/factories/pipelines",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"activities": [
-					{
-						"name": "Copy data",
-						"type": "Copy",
-						"dependsOn": [
-							{
-								"activity": "Set date variable",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"policy": {
-							"timeout": "7.00:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"source": {
-								"type": "DelimitedTextSource",
-								"storeSettings": {
-									"type": "AzureBlobStorageReadSettings",
-									"recursive": true
-								},
-								"formatSettings": {
-									"type": "DelimitedTextReadSettings"
-								}
-							},
-							"sink": {
-								"type": "ParquetSink",
-								"storeSettings": {
-									"type": "AzureBlobFSWriteSettings"
-								},
-								"formatSettings": {
-									"type": "ParquetWriteSettings"
-								}
-							},
-							"enableStaging": false,
-							"translator": {
-								"type": "TabularTranslator",
-								"typeConversion": true,
-								"typeConversionSettings": {
-									"allowDataTruncation": true,
-									"treatBooleanAsNumber": false
-								}
-							}
-						},
-						"inputs": [
-							{
-								"referenceName": "ds_blob_reviews",
-								"type": "DatasetReference",
-								"parameters": {
-									"filename": {
-										"value": "@pipeline().parameters.blobname",
-										"type": "Expression"
-									}
-								}
-							}
-						],
-						"outputs": [
-							{
-								"referenceName": "ds_adls_raw_parquet",
-								"type": "DatasetReference",
-								"parameters": {
-									"filename": {
-										"value": "@concat(pipeline().parameters.blobname, '.parquet')",
-										"type": "Expression"
-									},
-									"filepath": {
-										"value": "@{formatDateTime(variables('filetime'),'yyyy')}/@{formatDateTime(variables('filetime'),'MMM')}/@{formatDateTime(variables('filetime'),'dd')}",
-										"type": "Expression"
-									}
-								}
-							}
-						]
-					},
-					{
-						"name": "Set date variable",
-						"type": "SetVariable",
-						"dependsOn": [
-							{
-								"activity": "Log Start",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"userProperties": [],
-						"typeProperties": {
-							"variableName": "filetime",
-							"value": {
-								"value": "@pipeline().TriggerTime",
-								"type": "Expression"
-							}
-						}
-					},
-					{
-						"name": "Log Start",
-						"type": "SqlServerStoredProcedure",
-						"dependsOn": [],
-						"policy": {
-							"timeout": "7.00:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"storedProcedureName": "[[dbo].[ADF_LOG_START]",
-							"storedProcedureParameters": {
-								"pipeline_run": {
-									"value": {
-										"value": "@pipeline().Pipeline",
-										"type": "Expression"
-									},
-									"type": "String"
-								},
-								"run_ID": {
-									"value": {
-										"value": "@pipeline().RunId",
-										"type": "Expression"
-									},
-									"type": "Guid"
-								}
-							}
-						},
-						"linkedServiceName": {
-							"referenceName": "ls_asql_diyetldb",
-							"type": "LinkedServiceReference"
-						}
-					},
-					{
-						"name": "Log End",
-						"type": "SqlServerStoredProcedure",
-						"dependsOn": [
-							{
-								"activity": "Copy data",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"policy": {
-							"timeout": "7.00:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"storedProcedureName": "[[dbo].[ADF_LOG_END]",
-							"storedProcedureParameters": {
-								"run_ID": {
-									"value": {
-										"value": "@pipeline().RunId",
-										"type": "Expression"
-									},
-									"type": "Guid"
-								}
-							}
-						},
-						"linkedServiceName": {
-							"referenceName": "ls_asql_diyetldb",
-							"type": "LinkedServiceReference"
-						}
-					}
-				],
-				"parameters": {
-					"blobname": {
-						"type": "string",
-						"defaultValue": "@triggerBody().fileName"
-					},
-					"blobpath": {
-						"type": "string",
-						"defaultValue": "@triggerBody().folderPath"
-					}
-				},
-				"variables": {
-					"filetime": {
-						"type": "String"
-					}
-				},
-				"annotations": []
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/ds_blob_reviews')]",
-				"[concat(variables('factoryId'), '/datasets/ds_adls_raw_parquet')]",
-				"[concat(variables('factoryId'), '/linkedServices/ls_asql_diyetldb')]"
-			]
-		},
-		{
 			"name": "[concat(parameters('factoryName'), '/1 diy-blob-to-sql')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
@@ -406,6 +206,210 @@
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/datasets/ds_blob_finance_excel')]",
 				"[concat(variables('factoryId'), '/datasets/ds_asql_financedb')]",
+				"[concat(variables('factoryId'), '/linkedServices/ls_asql_diyetldb')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/2 diy-blob-to-adls')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Copy data",
+						"type": "Copy",
+						"dependsOn": [
+							{
+								"activity": "Set date variable",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "DelimitedTextSource",
+								"storeSettings": {
+									"type": "AzureBlobStorageReadSettings",
+									"recursive": false
+								},
+								"formatSettings": {
+									"type": "DelimitedTextReadSettings"
+								}
+							},
+							"sink": {
+								"type": "ParquetSink",
+								"storeSettings": {
+									"type": "AzureBlobFSWriteSettings"
+								},
+								"formatSettings": {
+									"type": "ParquetWriteSettings"
+								}
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"typeConversion": true,
+								"typeConversionSettings": {
+									"allowDataTruncation": true,
+									"treatBooleanAsNumber": false
+								}
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "ds_blob_reviews",
+								"type": "DatasetReference",
+								"parameters": {
+									"filename": {
+										"value": "@pipeline().parameters.blobname",
+										"type": "Expression"
+									},
+									"filepath": {
+										"value": "@pipeline().parameters.blobpath",
+										"type": "Expression"
+									}
+								}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "ds_adls_raw_parquet",
+								"type": "DatasetReference",
+								"parameters": {
+									"filename": {
+										"value": "@concat(pipeline().parameters.blobname, '.parquet')",
+										"type": "Expression"
+									},
+									"filepath": {
+										"value": "@{formatDateTime(variables('filetime'),'yyyy')}/@{formatDateTime(variables('filetime'),'MMM')}/@{formatDateTime(variables('filetime'),'dd')}",
+										"type": "Expression"
+									}
+								}
+							}
+						]
+					},
+					{
+						"name": "Set date variable",
+						"type": "SetVariable",
+						"dependsOn": [
+							{
+								"activity": "Log Start",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"variableName": "filetime",
+							"value": {
+								"value": "@pipeline().TriggerTime",
+								"type": "Expression"
+							}
+						}
+					},
+					{
+						"name": "Log Start",
+						"type": "SqlServerStoredProcedure",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"storedProcedureName": "[[dbo].[ADF_LOG_START]",
+							"storedProcedureParameters": {
+								"pipeline_run": {
+									"value": {
+										"value": "@pipeline().Pipeline",
+										"type": "Expression"
+									},
+									"type": "String"
+								},
+								"run_ID": {
+									"value": {
+										"value": "@pipeline().RunId",
+										"type": "Expression"
+									},
+									"type": "Guid"
+								}
+							}
+						},
+						"linkedServiceName": {
+							"referenceName": "ls_asql_diyetldb",
+							"type": "LinkedServiceReference"
+						}
+					},
+					{
+						"name": "Log End",
+						"type": "SqlServerStoredProcedure",
+						"dependsOn": [
+							{
+								"activity": "Copy data",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"storedProcedureName": "[[dbo].[ADF_LOG_END]",
+							"storedProcedureParameters": {
+								"run_ID": {
+									"value": {
+										"value": "@pipeline().RunId",
+										"type": "Expression"
+									},
+									"type": "Guid"
+								}
+							}
+						},
+						"linkedServiceName": {
+							"referenceName": "ls_asql_diyetldb",
+							"type": "LinkedServiceReference"
+						}
+					}
+				],
+				"parameters": {
+					"blobname": {
+						"type": "string",
+						"defaultValue": "@triggerBody().fileName"
+					},
+					"blobpath": {
+						"type": "string",
+						"defaultValue": "@triggerBody().folderPath"
+					}
+				},
+				"variables": {
+					"filetime": {
+						"type": "String"
+					}
+				},
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/ds_blob_reviews')]",
+				"[concat(variables('factoryId'), '/datasets/ds_adls_raw_parquet')]",
 				"[concat(variables('factoryId'), '/linkedServices/ls_asql_diyetldb')]"
 			]
 		},
@@ -672,6 +676,58 @@
 			]
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/ds_asql_pbimetadatadb')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "ls_asql_diyetldb",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [
+					{
+						"name": "GroupName",
+						"type": "nvarchar"
+					},
+					{
+						"name": "userType",
+						"type": "nvarchar"
+					},
+					{
+						"name": "AuditDate",
+						"type": "datetime",
+						"precision": 23,
+						"scale": 3
+					},
+					{
+						"name": "GroupID",
+						"type": "nvarchar"
+					},
+					{
+						"name": "UserEmail",
+						"type": "nvarchar"
+					},
+					{
+						"name": "UserName",
+						"type": "nvarchar"
+					},
+					{
+						"name": "UserRole",
+						"type": "nvarchar"
+					}
+				],
+				"typeProperties": {
+					"schema": "dbo",
+					"table": "pbisecurity"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/ls_asql_diyetldb')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/ds_blob_finance_excel')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
@@ -716,6 +772,38 @@
 			]
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/ds_blob_pbimetadata')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "ls_blob_finance",
+					"type": "LinkedServiceReference"
+				},
+				"parameters": {
+					"blobname": {
+						"type": "string"
+					}
+				},
+				"annotations": [],
+				"type": "Json",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"fileName": {
+							"value": "@dataset().blobname",
+							"type": "Expression"
+						},
+						"container": "outcontainer"
+					}
+				},
+				"schema": {}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/ls_blob_finance')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/ds_blob_reviews')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
@@ -727,6 +815,9 @@
 				"parameters": {
 					"filename": {
 						"type": "string"
+					},
+					"filepath": {
+						"type": "string"
 					}
 				},
 				"annotations": [],
@@ -736,6 +827,10 @@
 						"type": "AzureBlobStorageLocation",
 						"fileName": {
 							"value": "@dataset().filename",
+							"type": "Expression"
+						},
+						"folderPath": {
+							"value": "@dataset().filepath",
 							"type": "Expression"
 						},
 						"container": "reviewdata"
@@ -853,7 +948,7 @@
 			"apiVersion": "2018-06-01",
 			"properties": {
 				"annotations": [],
-				"runtimeState": "Stopped",
+				"runtimeState": "Started",
 				"pipelines": [
 					{
 						"pipelineReference": {
@@ -868,7 +963,8 @@
 				],
 				"type": "BlobEventsTrigger",
 				"typeProperties": {
-					"blobPathBeginsWith": "/reviewdata/blobs/",
+					"blobPathBeginsWith": "/reviewdata/blobs/blobs/",
+					"blobPathEndsWith": ".csv",
 					"ignoreEmptyBlobs": true,
 					"scope": "[parameters('tr-blob_properties_typeProperties_scope')]",
 					"events": [
@@ -878,90 +974,6 @@
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/pipelines/2 diy-blob-to-adls')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/ds_blob_pbimetadata')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "ls_blob_finance",
-					"type": "LinkedServiceReference"
-				},
-				"parameters": {
-					"blobname": {
-						"type": "string"
-					}
-				},
-				"annotations": [],
-				"type": "Json",
-				"typeProperties": {
-					"location": {
-						"type": "AzureBlobStorageLocation",
-						"fileName": {
-							"value": "@dataset().blobname",
-							"type": "Expression"
-						},
-						"container": "outcontainer"
-					}
-				},
-				"schema": {}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/ls_blob_finance')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/ds_asql_pbimetadatadb')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "ls_asql_diyetldb",
-					"type": "LinkedServiceReference"
-				},
-				"annotations": [],
-				"type": "AzureSqlTable",
-				"schema": [
-					{
-						"name": "GroupName",
-						"type": "nvarchar"
-					},
-					{
-						"name": "userType",
-						"type": "nvarchar"
-					},
-					{
-						"name": "AuditDate",
-						"type": "datetime",
-						"precision": 23,
-						"scale": 3
-					},
-					{
-						"name": "GroupID",
-						"type": "nvarchar"
-					},
-					{
-						"name": "UserEmail",
-						"type": "nvarchar"
-					},
-					{
-						"name": "UserName",
-						"type": "nvarchar"
-					},
-					{
-						"name": "UserRole",
-						"type": "nvarchar"
-					}
-				],
-				"typeProperties": {
-					"schema": "dbo",
-					"table": "pbisecurity"
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/ls_asql_diyetldb')]"
 			]
 		}
 	]
