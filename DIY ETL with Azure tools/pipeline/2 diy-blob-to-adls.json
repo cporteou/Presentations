@@ -26,7 +26,7 @@
 						"type": "DelimitedTextSource",
 						"storeSettings": {
 							"type": "AzureBlobStorageReadSettings",
-							"recursive": true
+							"recursive": false
 						},
 						"formatSettings": {
 							"type": "DelimitedTextReadSettings"
@@ -58,6 +58,10 @@
 						"parameters": {
 							"filename": {
 								"value": "@pipeline().parameters.blobname",
+								"type": "Expression"
+							},
+							"filepath": {
+								"value": "@pipeline().parameters.blobpath",
 								"type": "Expression"
 							}
 						}
