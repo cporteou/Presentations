@@ -22,7 +22,6 @@
 					"value": "@dataset().filename",
 					"type": "Expression"
 				},
-				"folderPath": "blobs",
 				"container": {
 					"value": "@dataset().filepath",
 					"type": "Expression"
