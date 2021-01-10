@@ -22,11 +22,11 @@
 					"value": "@dataset().filename",
 					"type": "Expression"
 				},
-				"folderPath": {
+				"folderPath": "blobs",
+				"container": {
 					"value": "@dataset().filepath",
 					"type": "Expression"
-				},
-				"container": "reviewdata"
+				}
 			},
 			"columnDelimiter": ",",
 			"escapeChar": "\\",
