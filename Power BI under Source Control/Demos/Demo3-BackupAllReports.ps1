@@ -30,6 +30,7 @@ break
 #-------------------------------------------------------
 #Loop through all of the workspaces, exporting reports locally as we go
 #We can't pipe this "easily" because the URI changes for each command
+Start-Process "C:\PowerBI_Backups"
 
     $uri = "https://api.powerbi.com/v1.0/myorg/groups"
     
@@ -54,8 +55,8 @@ break
    
             $exporturi = "https://api.powerbi.com/v1.0/myorg/groups/$($workspaceid)/reports/$($reportid)/Export"
             
-            Invoke-RestMethod -Uri $exporturi -Headers $authHeader -Method GET | Out-File -Force -FilePath "C:\PowerBI_Backups\$($workspacename)\$($reportname).pbix"
+            Invoke-RestMethod -Uri $exporturi -Headers $authHeader -Method GET | Out-File -Force -FilePath "C:\PowerBI_Backups\$($workspacename)\$($reportname).pbit"
         }        
     }
 
-    Start-Process "C:\PowerBI_Backups"
+    
