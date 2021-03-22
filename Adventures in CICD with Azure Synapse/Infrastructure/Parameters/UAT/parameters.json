@@ -1,0 +1,93 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "name": {
+            "value": "cpo-uks-uat-syn"
+        },
+        "location": {
+            "value": "uksouth"
+        },
+        "defaultDataLakeStorageAccountName": {
+            "value": "cpouksuatadls"
+        },
+        "defaultDataLakeStorageFilesystemName": {
+            "value": "synapse"
+        },
+        "sqlAdministratorLogin": {
+            "value": "sqladminuser"
+        },
+        "sqlAdministratorLoginPassword": {
+            "value": ""
+        },
+        "setWorkspaceIdentityRbacOnStorageAccount": {
+            "value": false
+        },
+        "allowAllConnections": {
+            "value": false
+        },
+        "grantWorkspaceIdentityControlForSql": {
+            "value": "Enabled"
+        },
+        "managedVirtualNetwork": {
+            "value": ""
+        },
+        "tagValues": {
+            "value": {}
+        },
+        "storageSubscriptionID": {
+            "value": ""
+        },
+        "storageResourceGroupName": {
+            "value": ""
+        },
+        "storageLocation": {
+            "value": "uksouth"
+        },
+        "storageRoleUniqueId": {
+            "value": ""
+        },
+        "isNewStorageAccount": {
+            "value": false
+        },
+        "isNewFileSystemOnly": {
+            "value": false
+        },
+        "isNewSparkPool": {
+            "value": false
+        },
+        "sparkPoolName": {
+            "value": "sparky"
+        },
+        "adlaResourceId": {
+            "value": ""
+        },
+        "storageAccessTier": {
+            "value": "Hot"
+        },
+        "storageAccountType": {
+            "value": "Standard_RAGRS"
+        },
+        "storageSupportsHttpsTrafficOnly": {
+            "value": true
+        },
+        "storageKind": {
+            "value": "StorageV2"
+        },
+        "storageIsHnsEnabled": {
+            "value": true
+        },
+        "userObjectId": {
+            "value": ""
+        },
+        "setSbdcRbacOnStorageAccount": {
+            "value": true
+        },
+        "setWorkspaceMsiByPassOnStorageAccount": {
+            "value": false
+        },
+        "workspaceStorageAccountProperties": {
+            "value": {}
+        }
+    }
+}
