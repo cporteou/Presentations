@@ -1,0 +1,25 @@
+parameters:
+  azureResourceManagerConnection: '<resource manager connection name>'
+  subscriptionId: '<subscription ID>'
+  location: 'UK South'
+  resourceGroup: '<Resource Group name>'
+  environment: 'dev/uat/prod'
+
+
+steps:
+
+  - checkout: self
+  - task: AzureResourceManagerTemplateDeployment@3
+    displayName: 'Azure Synapse workspace deployment'
+    inputs:
+      deploymentScope: 'Resource Group'
+      azureResourceManagerConnection: ${{ parameters.azureResourceManagerConnection }}
+      subscriptionId: ${{ parameters.subscriptionId }}
+      action: 'Create Or Update Resource Group'
+      resourceGroupName: ${{ parameters.resourceGroup }}
+      location: ${{ parameters.location }}
+      templateLocation: 'Linked artifact'
+      csmFile: 'synapseWorkspace.json'
+      csmParametersFile: 'Parameters/${{ parameters.environment }}/parameters.json'
+      deploymentMode: 'Incremental'
+

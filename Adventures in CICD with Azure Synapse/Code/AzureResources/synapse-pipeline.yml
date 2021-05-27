@@ -1,0 +1,79 @@
+# Author: Craig Porteous
+
+trigger:
+- main
+
+variables:
+  azureResourceManagerConnection: 'Azure Sponsorship'
+  subscriptionId: ''
+  location: 'UK South'
+
+pool:
+  vmImage: windows-latest
+
+stages:
+
+  - stage: Dev
+  
+    variables:
+    - group: dev-variables
+
+    jobs:
+      - deployment: Deploy
+        displayName: Deploy ARM Template to Dev environment
+        environment: 'Dev' 
+        strategy:                  
+          runOnce:
+            deploy:
+              steps:
+              - template: template-synapse-pipeline.yml
+                parameters: 
+                  azureResourceManagerConnection: '$(azureResourceManagerConnection)'
+                  subscriptionId: '$(subscriptionId)'
+                  location: '$(location)'
+                  resourceGroup: '$(resourceGroup)'
+                  environment: '$(environment)'
+
+  - stage: UAT
+
+    variables:
+    - group: uat-variables
+    
+    jobs:
+      - deployment: Deploy
+        displayName: Deploy ARM Template to uat environment
+        environment: 'Test' 
+        strategy:                  
+          runOnce:
+            deploy:
+              steps:
+              - template: template-synapse-pipeline.yml
+                parameters: 
+                  azureResourceManagerConnection: '$(azureResourceManagerConnection)'
+                  subscriptionId: '$(subscriptionId)'
+                  location: '$(location)'
+                  resourceGroup: '$(resourceGroup)'
+                  environment: '$(environment)'
+
+
+
+  - stage: Prod
+
+    variables:
+    - group: prod-variables
+    
+    jobs:
+      - deployment: Deploy
+        displayName: Deploy ARM Template to Prod environment
+        environment: 'Prod' 
+        strategy:                  
+          runOnce:
+            deploy:
+              steps:
+              - template: template-synapse-pipeline.yml
+                parameters: 
+                  azureResourceManagerConnection: '$(azureResourceManagerConnection)'
+                  subscriptionId: '$(subscriptionId)'
+                  location: '$(location)'
+                  resourceGroup: '$(resourceGroup)'
+                  environment: '$(environment)'
