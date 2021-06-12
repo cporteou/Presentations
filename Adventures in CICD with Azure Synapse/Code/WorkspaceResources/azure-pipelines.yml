@@ -1,0 +1,125 @@
+# Starter pipeline
+# Start with a minimal pipeline that you can customize to build and deploy your code.
+# Add steps that build, run tests, deploy, and more:
+# https://aka.ms/yaml
+
+trigger:
+- workspace_publish
+
+pool:
+  vmImage: 'vs2017-win2016'
+
+variables:
+  azureResourceManagerConnection: 'Azure Sponsorship'
+  subscriptionId: ''
+  location: 'UK South'
+
+stages:
+  - stage: Testing
+    
+    variables:
+    - group: uat-variables
+
+    jobs:
+      - deployment: Deploy
+        displayName: Deploy to UAT environment
+        environment: 'Test'
+        strategy:
+          runOnce:
+            deploy:
+              steps:
+              - checkout: self
+              - task: Synapse workspace deployment@0
+                displayName: "Deploy Synapse workspace content"
+                inputs:
+                  TemplateFile: '$(System.DefaultWorkingDirectory)/cpo-uks-dev-adventuresyn/TemplateForWorkspace.json'
+                  ParametersFile: '$(System.DefaultWorkingDirectory)/cpo-uks-dev-adventuresyn/TemplateParametersForWorkspace.json'
+                  azureSubscription: '$(azureResourceManagerConnection)'
+                  ResourceGroupName: '$(resourceGroup)'
+                  TargetWorkspaceName: '$(synapseWorkspace)'
+                  OverrideArmParameters: -cpo-uks-dev-adventuresyn-WorkspaceDefaultSqlServer_connectionString $(WorkspaceDefaultSqlServer)
+                                         -ls_asql_advworks_mdp_connectionString $(ls_asql_advworks_mdp)
+                                         -synapse_datalake_properties_typeProperties_url $(synapseDataLake)
+                  Environment: 'prod'
+                            
+              - task: AzurePowerShell@5
+                displayName: 'Remove DEV SQL linked services'
+                inputs:
+                  azureSubscription: '$(azureResourceManagerConnection)'
+                  ScriptType: 'InlineScript'
+                  Inline: |
+                    Install-module Az.Synapse -Scope CurrentUser -force
+                    Remove-AzSynapseLinkedService -WorkspaceName $(synapseWorkspace) -Name cpo-uks-dev-adventuresyn-WorkspaceDefaultSqlServer -ErrorAction SilentlyContinue -Force
+                  azurePowerShellVersion: 'LatestVersion'
+              
+              - task: AzurePowerShell@5
+                displayName: 'Remove DEV ADLS linked services'
+                inputs:
+                  azureSubscription: '$(azureResourceManagerConnection)'
+                  ScriptType: 'InlineScript'
+                  Inline: 'Remove-AzSynapseLinkedService -WorkspaceName $(synapseWorkspace) -Name cpo-uks-dev-adventuresyn-WorkspaceDefaultStorage -ErrorAction SilentlyContinue -Force'
+                  azurePowerShellVersion: 'LatestVersion'
+
+              - task: AzurePowerShell@5
+                displayName: 'Suspend Synapse SQL Pool'
+                inputs:
+                  azureSubscription: '$(azureResourceManagerConnection)'
+                  ScriptType: 'InlineScript'
+                  Inline: 'Suspend-AzSynapseSqlPool -WorkspaceName $(synapseWorkspace) -Name cpodwh -ErrorAction SilentlyContinue -AsJob'
+                  azurePowerShellVersion: 'LatestVersion'
+
+  - stage: Production
+    
+    variables:
+    - group: prod-variables
+
+    jobs:
+      - deployment: Deploy
+        displayName: Deploy to Prod environment
+        environment: 'Prod'
+        strategy:
+          runOnce:
+            deploy:
+              steps:
+              - checkout: self
+              - task: Synapse workspace deployment@0
+                displayName: "Deploy Synapse workspace content"
+                inputs:
+                  TemplateFile: '$(System.DefaultWorkingDirectory)/cpo-uks-dev-adventuresyn/TemplateForWorkspace.json'
+                  ParametersFile: '$(System.DefaultWorkingDirectory)/cpo-uks-dev-adventuresyn/TemplateParametersForWorkspace.json'
+                  azureSubscription: '$(azureResourceManagerConnection)'
+                  ResourceGroupName: '$(resourceGroup)'
+                  TargetWorkspaceName: '$(synapseWorkspace)'
+                  OverrideArmParameters: -cpo-uks-dev-adventuresyn-WorkspaceDefaultSqlServer_connectionString $(WorkspaceDefaultSqlServer)
+                                         -ls_asql_advworks_mdp_connectionString $(ls_asql_advworks_mdp)
+                                         -synapse_datalake_properties_typeProperties_url $(synapseDataLake)
+                  Environment: 'prod'
+                            
+              - task: AzurePowerShell@5
+                displayName: 'Remove DEV SQL linked services'
+                inputs:
+                  azureSubscription: '$(azureResourceManagerConnection)'
+                  ScriptType: 'InlineScript'
+                  Inline: |
+                    Install-module Az.Synapse -Scope CurrentUser -force
+                    Remove-AzSynapseLinkedService -WorkspaceName $(synapseWorkspace) -Name cpo-uks-dev-adventuresyn-WorkspaceDefaultSqlServer -ErrorAction SilentlyContinue -Force
+                  azurePowerShellVersion: 'LatestVersion'
+              
+              - task: AzurePowerShell@5
+                displayName: 'Remove DEV ADLS linked services'
+                inputs:
+                  azureSubscription: '$(azureResourceManagerConnection)'
+                  ScriptType: 'InlineScript'
+                  Inline: 'Remove-AzSynapseLinkedService -WorkspaceName $(synapseWorkspace) -Name cpo-uks-dev-adventuresyn-WorkspaceDefaultStorage -ErrorAction SilentlyContinue -Force'
+                  azurePowerShellVersion: 'LatestVersion'
+
+              - task: AzurePowerShell@5
+                displayName: 'Suspend Synapse SQL Pool'
+                inputs:
+                  azureSubscription: '$(azureResourceManagerConnection)'
+                  ScriptType: 'InlineScript'
+                  Inline: 'Suspend-AzSynapseSqlPool -WorkspaceName $(synapseWorkspace) -Name cpodwh -ErrorAction SilentlyContinue -AsJob'
+                  azurePowerShellVersion: 'LatestVersion'
+
+
+
