@@ -1,11 +1,21 @@
 # Presentations
 
+## Designing Data Architectures that InfoSec will actually approve
+Building your data platform in the cloud is easy, but as soon as that dreaded word "security" becomes involved it suddenly becomes incredibly painful. How do you go about integrating it with your existing networking, how do you manage user security, what on earth is a private endpoint? Over the past year, a lot of these tools have evolved and we now have a set of mature patterns we can apply to actually make a modern data platform secure.
+
+In this session I'll guide you from through a secure reference architecture with Data Factory, Databricks, Data Lake, and Azure Synapse, working together as a secure, fully productionised platform. Each has their own idiosyncrasies, but this session will teach you the options available and the pitfalls to avoid.
+
+### Where has this been presented?
+
+- Data Grillen 2022
 
 ## Adventures in CICD with Azure Synapse
 
 In this session we'll look at the process, prerequisites, and pitfalls of setting up a continuous deployment pipeline for Azure Synapse. In this demo-heavy session we'll set up a YAML pipeline using Azure DevOps to deploy Azure Synapse workspace resources through a development lifecycle.
 
 ### Where has this been presented?
+
+- Data Toboggan
 
 ## DIY ETL with Azure tools
 
