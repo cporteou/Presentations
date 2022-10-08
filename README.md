@@ -8,7 +8,7 @@ In this session I'll guide you from through a secure reference architecture with
 ### Where has this been presented?
 
 - Data Grillen 2022
-
+- Data Relay 2022
 ## Adventures in CICD with Azure Synapse
 
 In this session we'll look at the process, prerequisites, and pitfalls of setting up a continuous deployment pipeline for Azure Synapse. In this demo-heavy session we'll set up a YAML pipeline using Azure DevOps to deploy Azure Synapse workspace resources through a development lifecycle.
@@ -16,6 +16,7 @@ In this session we'll look at the process, prerequisites, and pitfalls of settin
 ### Where has this been presented?
 
 - Data Toboggan
+- DataMinds Connect 2022
 
 ## DIY ETL with Azure tools
 
@@ -32,6 +33,8 @@ In this session, we'll take 3 scenarios, solve them and make them reliable, and 
 Get the most out of your Reporting Services (SSRS) environments with this arsenal of PowerShell, SQL and admin tools. You'll leave this session knowing and controlling more about your SSRS environments than you thought possible covering monitoring, security, administration and deployment.
 
 ### Where has this been presented?
+
+- DATA:Scotland 2019
 
 ## Power BI under Source Control
 
