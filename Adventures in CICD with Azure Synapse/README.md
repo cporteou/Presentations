@@ -17,6 +17,8 @@ This contains the yaml pipeline file for deploying the artifacts inside Synapse.
 
 [Create a dacpac for an Azure Synapse Analytics dedicated SQL Pool using Azure DevOps by Kevin Chant](https://www.kevinrchant.com/2021/06/10/create-a-dacpac-for-an-azure-synapse-analytics-dedicated-sql-pool-using-azure-devops/)
 
+[SQL Dedicated CICD process - Microsoft](https://techcommunity.microsoft.com/t5/azure-synapse-analytics-blog/ci-cd-for-synapse-dedicated-sql-pool-using-yaml-templates/ba-p/3107389)
+
 [Azure Synapse parameterisation definition file (to parameterise more components in Synapse)](https://docs.microsoft.com/en-us/azure/synapse-analytics/cicd/continuous-integration-deployment#use-custom-parameters-of-the-workspace-template)
 
 
