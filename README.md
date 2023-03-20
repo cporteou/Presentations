@@ -1,5 +1,14 @@
 # Presentations
 
+## Why the Lakehouse
+Everyone's talking about data Lakehouses but what is a Lakehouse other than a nice place to go fishing? Why do you need to know about the lakehouse architecture, whats the benefits and is it all just hype?
+	
+In this session I'll cover what the Data Lakehouse architecture is, where it fits against existing architectures like a data warehouse, and why you should build one. We'll also cover the underlying technology options to arm you with all of the information you need to plan your next data platform.
+
+### Where has this been presented?
+
+- SQLBits 2023
+  
 ## Designing Data Architectures that InfoSec will actually approve
 Building your data platform in the cloud is easy, but as soon as that dreaded word "security" becomes involved it suddenly becomes incredibly painful. How do you go about integrating it with your existing networking, how do you manage user security, what on earth is a private endpoint? Over the past year, a lot of these tools have evolved and we now have a set of mature patterns we can apply to actually make a modern data platform secure.
 
@@ -9,6 +18,7 @@ In this session I'll guide you from through a secure reference architecture with
 
 - Data Grillen 2022
 - Data Relay 2022
+- SQLBits 2023
 ## Adventures in CICD with Azure Synapse
 
 In this session we'll look at the process, prerequisites, and pitfalls of setting up a continuous deployment pipeline for Azure Synapse. In this demo-heavy session we'll set up a YAML pipeline using Azure DevOps to deploy Azure Synapse workspace resources through a development lifecycle.
