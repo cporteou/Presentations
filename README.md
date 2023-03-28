@@ -27,6 +27,7 @@ In this session we'll look at the process, prerequisites, and pitfalls of settin
 
 - Data Toboggan
 - DataMinds Connect 2022
+- Data Saturday Denmark 2023
 
 ## DIY ETL with Azure tools
 
